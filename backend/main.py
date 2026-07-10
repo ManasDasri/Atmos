@@ -12,7 +12,7 @@ sys.path.append(str(Path(__file__).parent))
 
 # Import optimization and WAQI service
 try:
-    from optimize import optimize_hybrid_model
+    from optimize import run_milp_optimization as optimize_hybrid_model
     from waqi_service import fetch_live_aqi, BENGALURU_ZONES
     from traffic_service import fetch_zone_traffic_live
 except ImportError as e:

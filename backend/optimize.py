@@ -12,6 +12,8 @@ from ml_model import predict_urbanization
 TOTAL_BUDGET = 6000000  # ₹60 Lakhs
 REF_SENSOR_COST = 200000
 MON_SENSOR_COST = 50000
+TOTAL_SENSORS = 104
+REF_SENSORS = 4
 
 # Geographic bounds and grid size
 GRID_SPACING_KM = 2.5
@@ -112,9 +114,36 @@ def run_milp_optimization():
     # Constraint 1: Budget limit
     prob += lpSum([ref_vars[c["id"]] * REF_SENSOR_COST + mon_vars[c["id"]] * MON_SENSOR_COST for c in candidates]) <= TOTAL_BUDGET
     
-    # Constraint 2: Min/Max sensors
-    prob += lpSum([ref_vars[c["id"]] for c in candidates]) >= 4 # At least 4 reference
-    prob += lpSum([mon_vars[c["id"]] for c in candidates]) >= 10 # At least 10 monitors
+    # Maximum total sensors
+    prob += lpSum(mon_vars.values()) + lpSum(ref_vars.values()) == TOTAL_SENSORS, "Total_Sensors"
+    
+    # Exact number of reference sensors
+    prob += lpSum(ref_vars.values()) == REF_SENSORS, "Total_Ref_Sensors"
+    
+    # A location can have at most 1 sensor (either ref or mon)
+    for c in candidates:
+        prob += mon_vars[c["id"]] + ref_vars[c["id"]] <= 1
+    
+    # Add spatial distribution constraints to prevent clustering
+    buckets = {}
+    import math
+    for c in candidates:
+        # Create roughly 4x4km buckets (0.04 degrees)
+        b_lat = math.floor(c["lat"] / 0.04)
+        b_lon = math.floor(c["lon"] / 0.04)
+        b_id = (b_lat, b_lon)
+        if b_id not in buckets:
+            buckets[b_id] = []
+        buckets[b_id].append(c["id"])
+        
+    for b_id, bucket_ids in buckets.items():
+        # Enforce proportional allocation for each bucket
+        # (TOTAL_SENSORS / len(candidates)) is the average deployment density
+        min_sensors = math.floor((TOTAL_SENSORS / len(candidates)) * len(bucket_ids) * 0.7)
+        max_sensors = math.ceil((TOTAL_SENSORS / len(candidates)) * len(bucket_ids) * 1.5)
+        
+        prob += lpSum([mon_vars[cid] + ref_vars[cid] for cid in bucket_ids]) >= min_sensors
+        prob += lpSum([mon_vars[cid] + ref_vars[cid] for cid in bucket_ids]) <= max_sensors
     
     # Solve
     prob.solve()

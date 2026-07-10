@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Query - Atmos</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <style>
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3.5rem;
+            font-size: 1.1rem;
+            border: 2px solid rgba(167, 139, 250, 0.3);
+            border-radius: 16px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-lg), var(--glow-purple);
+        }
+
+        .autocomplete-dropdown {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: var(--shadow-xl);
+            display: none;
+        }
+
+        .autocomplete-dropdown.show {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(167, 139, 250, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item:hover,
+        .autocomplete-item.active {
+            background: rgba(167, 139, 250, 0.1);
+            padding-left: 2rem;
+        }
+
+        .zone-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .zone-pm25 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .pm25-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-primary);
+        }
+
+        .no-results {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .sensor-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .sensor-detail-item {
+            background: rgba(167, 139, 250, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            text-align: center;
+        }
+
+        .sensor-detail-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .sensor-detail-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .zone-card-clickable {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .zone-card-clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg), var(--glow-purple);
+        }
+    </style>
+</head>
+<body>
+    <div id="notification-bar" class="notification-bar" style="display: none;">
+        <div class="status-icon">
+            <div class="pulse"></div>
+        </div>
+        <div class="notification-content">
+            <span id="notification-text">Loading...</span>
+            <span id="notification-timestamp" class="timestamp"></span>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">🌿 ATMOS</div>
+            <nav>
+                <ul>
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/compare">Compare</a></li>
+                    <li><a href="/coverage">Coverage</a></li>
+                    <li><a href="/deployment">Deploy</a></li>
+                    <li><a href="/query">Query</a></li>
+                    <li><a href="/info">Info</a></li>
+                    <li><a href="/contrast">Contrast</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card fade-in">
+            <h1 class="card-title">🔍 Quick Zone Query</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Search for any zone in Bengaluru to get live air quality data and sensor deployment details
+            </p>
+
+            <div class="search-wrapper">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                </svg>
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    class="search-input" 
+                    placeholder="Type zone name... (e.g., HSR Layout, Whitefield, Silk Board)"
+                    autocomplete="off"
+                >
+                <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+            </div>
+
+            <button class="btn btn-primary" id="search-btn" style="margin-top: 1rem;">
+                🔍 Search Zone
+            </button>
+        </div>
+
+        <div id="search-result"></div>
+
+        <div class="card fade-in">
+            <h2 class="card-title">📍 Available Zones</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                Click on any zone to see detailed air quality data and sensor deployment information
+            </p>
+            <div id="available-zones" class="grid-3"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', path='app.js') }}"></script>
+    <script>
+        let allZones = [];
+        let selectedIndex = -1;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // FIXED: Add error handling
+                const model = await loadModelData();
+                if (!model) {
+                    throw new Error('Failed to load model data');
+                }
+                
+                // FIXED: Add null check for zones
+                if (!model.zones || model.zones.length === 0) {
+                    throw new Error('No zones data available');
+                }
+
+                allZones = model.zones;
+                const searchInput = document.getElementById('search-input');
+                const dropdown = document.getElementById('autocomplete-dropdown');
+                const container = document.getElementById('available-zones');
+                
+                if (!searchInput || !dropdown || !container) {
+                    throw new Error('Required DOM elements not found');
+                }
+
+                // Render all zones as cards
+                allZones.forEach(zone => {
+                    // FIXED: Add null checks
+                    const zoneName = zone.name || 'Unknown Zone';
+                    const zonePm25 = zone.pm25 || 0;
+                    const zoneSensors = zone.sensors || 0;
+                    const hasReference = zone.has_reference_sensor || false;
+                    const monitoringSensors = zone.monitoring_sensors || zoneSensors;
+                    
+                    const category = typeof getAQICategory === 'function' ? 
+                        getAQICategory(zonePm25) : 
+                        { class: 'aqi-moderate', text: 'Moderate' };
+                    
+                    const zoneCard = document.createElement('div');
+                    zoneCard.className = 'stat-card zone-card-clickable';
+                    
+                    const sensorType = hasReference ? 
+                        `<span style="color: #EC4899;">● REF</span> + ${monitoringSensors} MON` : 
+                        `${zoneSensors} MON`;
+                    
+                    zoneCard.innerHTML = `
+                        <div class="stat-label">${zoneName}</div>
+                        <div class="stat-value">${zonePm25.toFixed(1)}</div>
+                        <div class="stat-subtitle">
+                            <span class="aqi-badge ${category.class}">${category.text}</span>
+                        </div>
+                        <div style="margin-top: 0.75rem; font-size: 0.813rem; color: var(--text-secondary);">
+                            ${sensorType}
+                        </div>
+                    `;
+                    
+                    zoneCard.addEventListener('click', () => {
+                        searchInput.value = zoneName;
+                        displayEnhancedSearchResult(zone, model);
+                        dropdown.classList.remove('show');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    });
+
+                    container.appendChild(zoneCard);
+                });
+
+                // Autocomplete functionality
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.trim().toLowerCase();
+                    selectedIndex = -1;
+
+                    if (query === '') {
+                        dropdown.classList.remove('show');
+                        return;
+                    }
+
+                    const filtered = allZones.filter(zone => 
+                        (zone.name || '').toLowerCase().includes(query)
+                    );
+
+                    if (filtered.length === 0) {
+                        dropdown.innerHTML = '<div class="no-results">No zones found. Try "HSR Layout" or "Whitefield"</div>';
+                        dropdown.classList.add('show');
+                        return;
+                    }
+
+                    dropdown.innerHTML = filtered.map((zone, index) => {
+                        const zoneName = zone.name || 'Unknown Zone';
+                        const zonePm25 = zone.pm25 || 0;
+                        const hasReference = zone.has_reference_sensor || false;
+                        
+                        const category = typeof getAQICategory === 'function' ? 
+                            getAQICategory(zonePm25) : 
+                            { class: 'aqi-moderate', text: 'Moderate' };
+                        
+                        const sensorBadge = hasReference ? 
+                            '<span style="font-size: 0.75rem; color: #EC4899;">🔬 REF</span>' : 
+                            '<span style="font-size: 0.75rem; color: #4F46E5;">📊 MON</span>';
+                        
+                        return `
+                            <div class="autocomplete-item" data-index="${index}">
+                                <span class="zone-name">${zoneName} ${sensorBadge}</span>
+                                <div class="zone-pm25">
+                                    <span class="pm25-value">${zonePm25.toFixed(1)}</span>
+                                    <span class="aqi-badge ${category.class}">${category.text}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    dropdown.classList.add('show');
+
+                    // Add click handlers to dropdown items
+                    dropdown.querySelectorAll('.autocomplete-item').forEach((item, index) => {
+                        item.addEventListener('click', () => {
+                            const zone = filtered[index];
+                            searchInput.value = zone.name || 'Unknown Zone';
+                            displayEnhancedSearchResult(zone, model);
+                            dropdown.classList.remove('show');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        });
+                    });
+                });
+
+                // Keyboard navigation
+                searchInput.addEventListener('keydown', (e) => {
+                    const items = dropdown.querySelectorAll('.autocomplete-item');
+                    
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                        updateSelection(items);
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        selectedIndex = Math.max(selectedIndex - 1, -1);
+                        updateSelection(items);
+                    } else if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (selectedIndex >= 0 && items[selectedIndex]) {
+                            items[selectedIndex].click();
+                        } else {
+                            const searchBtn = document.getElementById('search-btn');
+                            if (searchBtn) searchBtn.click();
+                        }
+                    } else if (e.key === 'Escape') {
+                        dropdown.classList.remove('show');
+                        selectedIndex = -1;
+                    }
+                });
+
+                function updateSelection(items) {
+                    items.forEach((item, index) => {
+                        if (index === selectedIndex) {
+                            item.classList.add('active');
+                            item.scrollIntoView({ block: 'nearest' });
+                        } else {
+                            item.classList.remove('active');
+                        }
+                    });
+                }
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.classList.remove('show');
+                        selectedIndex = -1;
+                    }
+                });
+
+                // Search button functionality
+                const searchBtn = document.getElementById('search-btn');
+                if (searchBtn) {
+                    searchBtn.addEventListener('click', async () => {
+                        const zoneName = searchInput.value.trim();
+                        if (zoneName) {
+                            const zone = await searchZone(zoneName);
+                            displayEnhancedSearchResult(zone, model);
+                            dropdown.classList.remove('show');
+                        }
+                    });
+                }
+                
+                console.log('Query page loaded successfully');
+                
+            } catch (error) {
+                console.error('Error loading query page:', error);
+                
+                // Show error message
+                const errorHTML = `
+                    <div style="padding: 2rem; text-align: center; color: var(--danger);">
+                        <h3>⚠️ Failed to Load Query Page</h3>
+                        <p>${error.message}</p>
+                        <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 1rem;">
+                            🔄 Reload Page
+                        </button>
+                    </div>
+                `;
+                
+                const container = document.getElementById('available-zones');
+                if (container) {
+                    container.innerHTML = errorHTML;
+                }
+            }
+        });
+
+        // Enhanced search result display
+        function displayEnhancedSearchResult(zone, model) {
+            const container = document.getElementById('search-result');
+            if (!container) return;
+            
+            if (!zone) {
+                container.innerHTML = `
+                    <div class="card fade-in">
+                        <p style="color: var(--danger);">❌ Zone not found. Please try another name from the list below.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // FIXED: Add null checks for all zone properties
+            const zoneName = zone.name || 'Unknown Zone';
+            const zonePm25 = zone.pm25 || 0;
+            const zoneTraffic = zone.traffic || 'Unknown';
+            const zoneSensors = zone.sensors || 0;
+            const hasReference = zone.has_reference_sensor || false;
+            const monitoringSensors = zone.monitoring_sensors || zoneSensors;
+            const zoneCongestion = zone.congestion || 0;
+            const zonePriority = zone.priority || zone.weight || 0;
+            const sensorLocations = zone.sensor_locations || [];
+            
+            const category = typeof getAQICategory === 'function' ? 
+                getAQICategory(zonePm25) : 
+                { class: 'aqi-moderate', text: 'Moderate' };
+            
+            // FIXED: Add null checks for model fields
+            const refRange = model.reference_sensor_range_km || 4;
+            const monRange = model.monitoring_sensor_range_km || 3;
+            
+            const sensorTypeDetail = hasReference ? 
+                `1 Reference (${refRange}km) + ${monitoringSensors} Monitoring (${monRange}km)` : 
+                `${zoneSensors} Monitoring (${monRange}km range)`;
+            
+            container.innerHTML = `
+                <div class="card fade-in">
+                    <h2 style="margin-bottom: 1.5rem; color: var(--accent-primary); display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        ${zoneName}
+                        ${hasReference ? '<span class="reference-badge">Reference Station</span>' : ''}
+                        <span class="traffic-badge traffic-${zoneTraffic.toLowerCase()}">${zoneTraffic} Traffic</span>
+                    </h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card ${category.class.replace('aqi-', '')}">
+                            <div class="stat-label">PM2.5 Level</div>
+                            <div class="stat-value">${zonePm25.toFixed(1)}</div>
+                            <div class="stat-subtitle">µg/m³</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Air Quality Status</div>
+                            <div class="stat-value" style="font-size: 1.5rem;">${category.text}</div>
+                            <div class="stat-subtitle">Health category</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Traffic Level</div>
+                            <div class="stat-value" style="font-size: 1.5rem;">${zoneTraffic}</div>
+                            <div class="stat-subtitle">${zoneCongestion.toFixed(0)}% congestion</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Total Sensors</div>
+                            <div class="stat-value">${zoneSensors}</div>
+                            <div class="stat-subtitle">${sensorTypeDetail}</div>
+                        </div>
+                    </div>
+
+                    <div class="sensor-detail-grid">
+                        ${hasReference ? `
+                        <div class="sensor-detail-item" style="border-color: rgba(236, 72, 153, 0.3); background: rgba(236, 72, 153, 0.05);">
+                            <div class="sensor-detail-label">Reference Sensor</div>
+                            <div class="sensor-detail-value" style="color: #EC4899;">1 × ${refRange}km</div>
+                        </div>
+                        ` : ''}
+                        <div class="sensor-detail-item" style="border-color: rgba(79, 70, 229, 0.3); background: rgba(79, 70, 229, 0.05);">
+                            <div class="sensor-detail-label">Monitoring Sensors</div>
+                            <div class="sensor-detail-value" style="color: #4F46E5;">${monitoringSensors} × ${monRange}km</div>
+                        </div>
+                        <div class="sensor-detail-item">
+                            <div class="sensor-detail-label">Priority Weight</div>
+                            <div class="sensor-detail-value">${zonePriority.toFixed(3)}</div>
+                        </div>
+                        <div class="sensor-detail-item">
+                            <div class="sensor-detail-label">Sensor Locations</div>
+                            <div class="sensor-detail-value">${sensorLocations.length || zoneSensors}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; padding: 1.5rem; background: rgba(167, 139, 250, 0.05); border-radius: 16px; border: 1px solid rgba(167, 139, 250, 0.2);">
+                        <h3 style="color: var(--accent-primary); margin-bottom: 1rem; font-size: 1.1rem;">📊 Deployment Details</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.6; margin: 0;">
+                            This zone has been allocated <strong>${zoneSensors} sensor${zoneSensors > 1 ? 's' : ''}</strong> based on its 
+                            pollution level (PM2.5: ${zonePm25.toFixed(1)} µg/m³) and traffic density (${zoneTraffic}). 
+                            ${hasReference ? 
+                                `<strong style="color: #EC4899;">It serves as a reference station</strong> with one high-grade sensor (${refRange}km range) for calibration purposes, plus ${monitoringSensors} monitoring sensors (${monRange}km range). ` :
+                                `All sensors are monitoring-grade with ${monRange}km range each. `
+                            }
+                            The priority-based allocation ensures optimal coverage for this ${zoneTraffic.toLowerCase()}-traffic area.
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

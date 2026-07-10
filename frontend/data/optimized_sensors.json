@@ -1,0 +1,1859 @@
+{
+    "status": "optimized",
+    "total_cost": 5800000,
+    "total_sensors": 104,
+    "reference_sensors": 4,
+    "monitoring_sensors": 100,
+    "total_zones": 45,
+    "average_aqi": 105.24038461538461,
+    "effective_coverage_km2": 2574.2210203514765,
+    "theoretical_coverage_km2": 3028.4953180605607,
+    "overlap_percentage": 15.000000000000002,
+    "coverage_percentage": 100.0,
+    "city_total_area_km2": 1108.625368064875,
+    "worst_zone": {
+        "name": "Central",
+        "aqi": 119
+    },
+    "best_zone": {
+        "name": "Outskirts",
+        "aqi": 82
+    },
+    "all_sensors": [
+        {
+            "id": "Grid_12.96_77.483",
+            "lat": 12.960180180180187,
+            "lon": 77.48252252252252,
+            "pm25": 82,
+            "traffic": "High",
+            "pop_density": 13455,
+            "urbanization_score": 0.8063161959756581,
+            "nearest_zone": "Vijayanagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.983_77.483",
+            "lat": 12.98270270270271,
+            "lon": 77.48252252252252,
+            "pm25": 82,
+            "traffic": "High",
+            "pop_density": 13466,
+            "urbanization_score": 0.8063161959756581,
+            "nearest_zone": "Vijayanagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.483",
+            "lat": 13.005225225225233,
+            "lon": 77.48252252252252,
+            "pm25": 89,
+            "traffic": "High",
+            "pop_density": 14886,
+            "urbanization_score": 0.8063161959756581,
+            "nearest_zone": "Peenya Industrial Area",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.505",
+            "lat": 12.91513513513514,
+            "lon": 77.50504504504504,
+            "pm25": 86,
+            "traffic": "Medium",
+            "pop_density": 14376,
+            "urbanization_score": 0.7343231522932893,
+            "nearest_zone": "Banashankari 3rd Stage",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.938_77.505",
+            "lat": 12.937657657657663,
+            "lon": 77.50504504504504,
+            "pm25": 87,
+            "traffic": "High",
+            "pop_density": 14566,
+            "urbanization_score": 0.8063161959756581,
+            "nearest_zone": "Vijayanagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.96_77.505",
+            "lat": 12.960180180180187,
+            "lon": 77.50504504504504,
+            "pm25": 98,
+            "traffic": "High",
+            "pop_density": 16640,
+            "urbanization_score": 0.8059246827215039,
+            "nearest_zone": "Vijayanagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.983_77.505",
+            "lat": 12.98270270270271,
+            "lon": 77.50504504504504,
+            "pm25": 98,
+            "traffic": "High",
+            "pop_density": 16658,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Vijayanagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.505",
+            "lat": 13.005225225225233,
+            "lon": 77.50504504504504,
+            "pm25": 100,
+            "traffic": "High",
+            "pop_density": 17043,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Peenya Industrial Area",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.505",
+            "lat": 13.027747747747757,
+            "lon": 77.50504504504504,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19382,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Peenya Industrial Area",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.05_77.505",
+            "lat": 13.05027027027028,
+            "lon": 77.50504504504504,
+            "pm25": 102,
+            "traffic": "High",
+            "pop_density": 17564,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Peenya Industrial Area",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.893_77.528",
+            "lat": 12.892612612612616,
+            "lon": 77.52756756756756,
+            "pm25": 91,
+            "traffic": "Medium",
+            "pop_density": 15276,
+            "urbanization_score": 0.7370463261919257,
+            "nearest_zone": "Banashankari 3rd Stage",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.528",
+            "lat": 12.91513513513514,
+            "lon": 77.52756756756756,
+            "pm25": 102,
+            "traffic": "Medium",
+            "pop_density": 17548,
+            "urbanization_score": 0.7372248249578098,
+            "nearest_zone": "Banashankari 3rd Stage",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.938_77.528",
+            "lat": 12.937657657657663,
+            "lon": 77.52756756756756,
+            "pm25": 101,
+            "traffic": "Medium",
+            "pop_density": 17354,
+            "urbanization_score": 0.7367379880204998,
+            "nearest_zone": "Banashankari 3rd Stage",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.96_77.528",
+            "lat": 12.960180180180187,
+            "lon": 77.52756756756756,
+            "pm25": 110,
+            "traffic": "High",
+            "pop_density": 19176,
+            "urbanization_score": 0.8283528723806626,
+            "nearest_zone": "Vijayanagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.983_77.528",
+            "lat": 12.98270270270271,
+            "lon": 77.52756756756756,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19219,
+            "urbanization_score": 0.8283528723806626,
+            "nearest_zone": "Vijayanagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.528",
+            "lat": 13.005225225225233,
+            "lon": 77.52756756756756,
+            "pm25": 101,
+            "traffic": "High",
+            "pop_density": 17261,
+            "urbanization_score": 0.8356456266178169,
+            "nearest_zone": "Yeshwanthpur",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.528",
+            "lat": 13.027747747747757,
+            "lon": 77.52756756756756,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19381,
+            "urbanization_score": 0.8188491823473162,
+            "nearest_zone": "Yeshwanthpur",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.05_77.528",
+            "lat": 13.05027027027028,
+            "lon": 77.52756756756756,
+            "pm25": 102,
+            "traffic": "High",
+            "pop_density": 17492,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Peenya Industrial Area",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.073_77.528",
+            "lat": 13.072792792792804,
+            "lon": 77.52756756756756,
+            "pm25": 86,
+            "traffic": "High",
+            "pop_density": 14388,
+            "urbanization_score": 0.8063161959756581,
+            "nearest_zone": "Peenya Industrial Area",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.87_77.55",
+            "lat": 12.870090090090093,
+            "lon": 77.55009009009008,
+            "pm25": 88,
+            "traffic": "Medium",
+            "pop_density": 14721,
+            "urbanization_score": 0.7344110847412422,
+            "nearest_zone": "JP Nagar 7th Phase",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.893_77.55",
+            "lat": 12.892612612612616,
+            "lon": 77.55009009009008,
+            "pm25": 96,
+            "traffic": "Medium",
+            "pop_density": 16202,
+            "urbanization_score": 0.7379893072758233,
+            "nearest_zone": "Banashankari 3rd Stage",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.55",
+            "lat": 12.91513513513514,
+            "lon": 77.55009009009008,
+            "pm25": 112,
+            "traffic": "Medium",
+            "pop_density": 19525,
+            "urbanization_score": 0.7377877259401657,
+            "nearest_zone": "Banashankari 3rd Stage",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.938_77.55",
+            "lat": 12.937657657657663,
+            "lon": 77.55009009009008,
+            "pm25": 112,
+            "traffic": "Medium",
+            "pop_density": 19555,
+            "urbanization_score": 0.7449753396552249,
+            "nearest_zone": "Banashankari 2nd Stage",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.96_77.55",
+            "lat": 12.960180180180187,
+            "lon": 77.55009009009008,
+            "pm25": 105,
+            "traffic": "Medium",
+            "pop_density": 18103,
+            "urbanization_score": 0.7630566042062695,
+            "nearest_zone": "Mahalaxmi Layout",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.983_77.55",
+            "lat": 12.98270270270271,
+            "lon": 77.55009009009008,
+            "pm25": 113,
+            "traffic": "Medium",
+            "pop_density": 19615,
+            "urbanization_score": 0.7630571916487041,
+            "nearest_zone": "Mahalaxmi Layout",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.55",
+            "lat": 13.005225225225233,
+            "lon": 77.55009009009008,
+            "pm25": 109,
+            "traffic": "Medium",
+            "pop_density": 18884,
+            "urbanization_score": 0.7449753396552249,
+            "nearest_zone": "Rajajinagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.55",
+            "lat": 13.027747747747757,
+            "lon": 77.55009009009008,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19284,
+            "urbanization_score": 0.8343415926053978,
+            "nearest_zone": "Yeshwanthpur",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.05_77.55",
+            "lat": 13.05027027027028,
+            "lon": 77.55009009009008,
+            "pm25": 101,
+            "traffic": "High",
+            "pop_density": 17284,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Yeshwanthpur",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.073_77.55",
+            "lat": 13.072792792792804,
+            "lon": 77.55009009009008,
+            "pm25": 85,
+            "traffic": "High",
+            "pop_density": 14152,
+            "urbanization_score": 0.8063161959756581,
+            "nearest_zone": "Yeshwanthpur",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.848_77.573",
+            "lat": 12.84756756756757,
+            "lon": 77.5726126126126,
+            "pm25": 87,
+            "traffic": "Medium",
+            "pop_density": 14405,
+            "urbanization_score": 0.7397619024882998,
+            "nearest_zone": "Gottigere",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.87_77.573",
+            "lat": 12.870090090090093,
+            "lon": 77.5726126126126,
+            "pm25": 101,
+            "traffic": "Medium",
+            "pop_density": 17243,
+            "urbanization_score": 0.7370463261919257,
+            "nearest_zone": "JP Nagar 7th Phase",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.893_77.573",
+            "lat": 12.892612612612616,
+            "lon": 77.5726126126126,
+            "pm25": 109,
+            "traffic": "Medium",
+            "pop_density": 18857,
+            "urbanization_score": 0.7415962927141737,
+            "nearest_zone": "JP Nagar 7th Phase",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.573",
+            "lat": 12.91513513513514,
+            "lon": 77.5726126126126,
+            "pm25": 109,
+            "traffic": "High",
+            "pop_density": 18830,
+            "urbanization_score": 0.8250054814165805,
+            "nearest_zone": "JP Nagar 1st Phase",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.938_77.573",
+            "lat": 12.937657657657663,
+            "lon": 77.5726126126126,
+            "pm25": 116,
+            "traffic": "Medium",
+            "pop_density": 20287,
+            "urbanization_score": 0.763201850033661,
+            "nearest_zone": "Basavanagudi",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.573",
+            "lat": 13.005225225225233,
+            "lon": 77.5726126126126,
+            "pm25": 118,
+            "traffic": "Medium",
+            "pop_density": 20657,
+            "urbanization_score": 0.763201850033661,
+            "nearest_zone": "Malleshwaram",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.573",
+            "lat": 13.027747747747757,
+            "lon": 77.5726126126126,
+            "pm25": 103,
+            "traffic": "Medium",
+            "pop_density": 17645,
+            "urbanization_score": 0.7464308382935531,
+            "nearest_zone": "Malleshwaram",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.05_77.573",
+            "lat": 13.05027027027028,
+            "lon": 77.5726126126126,
+            "pm25": 99,
+            "traffic": "High",
+            "pop_density": 16803,
+            "urbanization_score": 0.837248111093706,
+            "nearest_zone": "Hebbal",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.073_77.573",
+            "lat": 13.072792792792804,
+            "lon": 77.5726126126126,
+            "pm25": 98,
+            "traffic": "Medium",
+            "pop_density": 16723,
+            "urbanization_score": 0.7370463261919257,
+            "nearest_zone": "Yelahanka New Town",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.095_77.573",
+            "lat": 13.095315315315327,
+            "lon": 77.5726126126126,
+            "pm25": 102,
+            "traffic": "Medium",
+            "pop_density": 17404,
+            "urbanization_score": 0.7397619024882998,
+            "nearest_zone": "Yelahanka Old Town",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.848_77.595",
+            "lat": 12.84756756756757,
+            "lon": 77.59513513513512,
+            "pm25": 96,
+            "traffic": "Medium",
+            "pop_density": 16399,
+            "urbanization_score": 0.7398610252138714,
+            "nearest_zone": "Gottigere",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.87_77.595",
+            "lat": 12.870090090090093,
+            "lon": 77.59513513513512,
+            "pm25": 110,
+            "traffic": "Medium",
+            "pop_density": 19068,
+            "urbanization_score": 0.7384355575703013,
+            "nearest_zone": "Gottigere",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.893_77.595",
+            "lat": 12.892612612612616,
+            "lon": 77.59513513513512,
+            "pm25": 113,
+            "traffic": "Medium",
+            "pop_density": 19772,
+            "urbanization_score": 0.7386427973436992,
+            "nearest_zone": "JP Nagar 7th Phase",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.595",
+            "lat": 12.91513513513514,
+            "lon": 77.59513513513512,
+            "pm25": 113,
+            "traffic": "Medium",
+            "pop_density": 19732,
+            "urbanization_score": 0.7421326583239461,
+            "nearest_zone": "Jayanagar 5th Block",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.595",
+            "lat": 13.027747747747757,
+            "lon": 77.59513513513512,
+            "pm25": 113,
+            "traffic": "High",
+            "pop_density": 19776,
+            "urbanization_score": 0.8287146393222068,
+            "nearest_zone": "Hebbal",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.05_77.595",
+            "lat": 13.05027027027028,
+            "lon": 77.59513513513512,
+            "pm25": 113,
+            "traffic": "Medium",
+            "pop_density": 19719,
+            "urbanization_score": 0.7386427973436992,
+            "nearest_zone": "Nagawara",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.073_77.595",
+            "lat": 13.072792792792804,
+            "lon": 77.59513513513512,
+            "pm25": 107,
+            "traffic": "Medium",
+            "pop_density": 18564,
+            "urbanization_score": 0.7384355575703013,
+            "nearest_zone": "Yelahanka New Town",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.095_77.595",
+            "lat": 13.095315315315327,
+            "lon": 77.59513513513512,
+            "pm25": 115,
+            "traffic": "Medium",
+            "pop_density": 20184,
+            "urbanization_score": 0.7414431436025346,
+            "nearest_zone": "Yelahanka Old Town",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.848_77.618",
+            "lat": 12.84756756756757,
+            "lon": 77.61765765765765,
+            "pm25": 97,
+            "traffic": "Medium",
+            "pop_density": 16410,
+            "urbanization_score": 0.7397619024882998,
+            "nearest_zone": "Gottigere",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.87_77.618",
+            "lat": 12.870090090090093,
+            "lon": 77.61765765765765,
+            "pm25": 110,
+            "traffic": "Medium",
+            "pop_density": 19095,
+            "urbanization_score": 0.7381891964823756,
+            "nearest_zone": "Gottigere",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.893_77.618",
+            "lat": 12.892612612612616,
+            "lon": 77.61765765765765,
+            "pm25": 106,
+            "traffic": "High",
+            "pop_density": 18346,
+            "urbanization_score": 0.8365136173419446,
+            "nearest_zone": "Bannerghatta Road Main",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.618",
+            "lat": 12.91513513513514,
+            "lon": 77.61765765765765,
+            "pm25": 119,
+            "traffic": "High",
+            "pop_density": 20824,
+            "urbanization_score": 0.8254903041513425,
+            "nearest_zone": "Madiwala",
+            "type": "reference",
+            "range_km": 4
+        },
+        {
+            "id": "Grid_12.938_77.618",
+            "lat": 12.937657657657663,
+            "lon": 77.61765765765765,
+            "pm25": 115,
+            "traffic": "High",
+            "pop_density": 20119,
+            "urbanization_score": 0.8408979208377513,
+            "nearest_zone": "Koramangala 5th Block",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.618",
+            "lat": 13.005225225225233,
+            "lon": 77.61765765765765,
+            "pm25": 105,
+            "traffic": "High",
+            "pop_density": 18029,
+            "urbanization_score": 0.8389323562295304,
+            "nearest_zone": "Kammanahalli",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.618",
+            "lat": 13.027747747747757,
+            "lon": 77.61765765765765,
+            "pm25": 112,
+            "traffic": "High",
+            "pop_density": 19432,
+            "urbanization_score": 0.8263921510605792,
+            "nearest_zone": "Manyata Tech Park Main Gate",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.05_77.618",
+            "lat": 13.05027027027028,
+            "lon": 77.61765765765765,
+            "pm25": 114,
+            "traffic": "High",
+            "pop_density": 19883,
+            "urbanization_score": 0.837248111093706,
+            "nearest_zone": "Thanisandra Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.073_77.618",
+            "lat": 13.072792792792804,
+            "lon": 77.61765765765765,
+            "pm25": 103,
+            "traffic": "High",
+            "pop_density": 17736,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Thanisandra Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.095_77.618",
+            "lat": 13.095315315315327,
+            "lon": 77.61765765765765,
+            "pm25": 103,
+            "traffic": "Medium",
+            "pop_density": 17740,
+            "urbanization_score": 0.7405464796360927,
+            "nearest_zone": "Yelahanka Old Town",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.848_77.64",
+            "lat": 12.84756756756757,
+            "lon": 77.64018018018017,
+            "pm25": 105,
+            "traffic": "High",
+            "pop_density": 18008,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Electronic City Phase 1",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.87_77.64",
+            "lat": 12.870090090090093,
+            "lon": 77.64018018018017,
+            "pm25": 96,
+            "traffic": "High",
+            "pop_density": 16309,
+            "urbanization_score": 0.8059246827215039,
+            "nearest_zone": "Electronic City Phase 1",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.893_77.64",
+            "lat": 12.892612612612616,
+            "lon": 77.64018018018017,
+            "pm25": 106,
+            "traffic": "High",
+            "pop_density": 18312,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "HSR Layout Sector 2",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.64",
+            "lat": 12.91513513513514,
+            "lon": 77.64018018018017,
+            "pm25": 116,
+            "traffic": "High",
+            "pop_density": 20256,
+            "urbanization_score": 0.8331362202861277,
+            "nearest_zone": "HSR Layout Sector 1",
+            "type": "reference",
+            "range_km": 4
+        },
+        {
+            "id": "Grid_12.938_77.64",
+            "lat": 12.937657657657663,
+            "lon": 77.64018018018017,
+            "pm25": 110,
+            "traffic": "High",
+            "pop_density": 19193,
+            "urbanization_score": 0.8282594832014898,
+            "nearest_zone": "Koramangala 7th Block",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.96_77.64",
+            "lat": 12.960180180180187,
+            "lon": 77.64018018018017,
+            "pm25": 118,
+            "traffic": "High",
+            "pop_density": 20742,
+            "urbanization_score": 0.8379835098904342,
+            "nearest_zone": "Domlur",
+            "type": "reference",
+            "range_km": 4
+        },
+        {
+            "id": "Grid_12.983_77.64",
+            "lat": 12.98270270270271,
+            "lon": 77.64018018018017,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19349,
+            "urbanization_score": 0.8384628541657484,
+            "nearest_zone": "Indiranagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.64",
+            "lat": 13.005225225225233,
+            "lon": 77.64018018018017,
+            "pm25": 115,
+            "traffic": "High",
+            "pop_density": 20191,
+            "urbanization_score": 0.8273823727250607,
+            "nearest_zone": "Kammanahalli",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.64",
+            "lat": 13.027747747747757,
+            "lon": 77.64018018018017,
+            "pm25": 118,
+            "traffic": "High",
+            "pop_density": 20719,
+            "urbanization_score": 0.8335223531637136,
+            "nearest_zone": "Kalyan Nagar",
+            "type": "reference",
+            "range_km": 4
+        },
+        {
+            "id": "Grid_13.05_77.64",
+            "lat": 13.05027027027028,
+            "lon": 77.64018018018017,
+            "pm25": 108,
+            "traffic": "High",
+            "pop_density": 18738,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Thanisandra Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.073_77.64",
+            "lat": 13.072792792792804,
+            "lon": 77.64018018018017,
+            "pm25": 100,
+            "traffic": "High",
+            "pop_density": 17189,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Thanisandra Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.095_77.64",
+            "lat": 13.095315315315327,
+            "lon": 77.64018018018017,
+            "pm25": 87,
+            "traffic": "Medium",
+            "pop_density": 14457,
+            "urbanization_score": 0.7400696012951614,
+            "nearest_zone": "Yelahanka New Town",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.825_77.663",
+            "lat": 12.825045045045046,
+            "lon": 77.66270270270269,
+            "pm25": 104,
+            "traffic": "High",
+            "pop_density": 17959,
+            "urbanization_score": 0.3754856691973374,
+            "nearest_zone": "Electronic City Phase 2",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.848_77.663",
+            "lat": 12.84756756756757,
+            "lon": 77.66270270270269,
+            "pm25": 117,
+            "traffic": "High",
+            "pop_density": 20540,
+            "urbanization_score": 0.37588233946954025,
+            "nearest_zone": "Electronic City Phase 1",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.87_77.663",
+            "lat": 12.870090090090093,
+            "lon": 77.66270270270269,
+            "pm25": 101,
+            "traffic": "High",
+            "pop_density": 17358,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Electronic City Phase 1",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.893_77.663",
+            "lat": 12.892612612612616,
+            "lon": 77.66270270270269,
+            "pm25": 99,
+            "traffic": "High",
+            "pop_density": 16997,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Sarjapur Road Main",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.663",
+            "lat": 12.91513513513514,
+            "lon": 77.66270270270269,
+            "pm25": 108,
+            "traffic": "High",
+            "pop_density": 18689,
+            "urbanization_score": 0.8147607657210953,
+            "nearest_zone": "Bellandur",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.938_77.663",
+            "lat": 12.937657657657663,
+            "lon": 77.66270270270269,
+            "pm25": 108,
+            "traffic": "High",
+            "pop_density": 18733,
+            "urbanization_score": 0.8354919625416288,
+            "nearest_zone": "Bellandur",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.96_77.663",
+            "lat": 12.960180180180187,
+            "lon": 77.66270270270269,
+            "pm25": 103,
+            "traffic": "High",
+            "pop_density": 17673,
+            "urbanization_score": 0.8315455494552755,
+            "nearest_zone": "HAL Old Airport Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.983_77.663",
+            "lat": 12.98270270270271,
+            "lon": 77.66270270270269,
+            "pm25": 102,
+            "traffic": "High",
+            "pop_density": 17418,
+            "urbanization_score": 0.8293915686783224,
+            "nearest_zone": "Indiranagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.663",
+            "lat": 13.005225225225233,
+            "lon": 77.66270270270269,
+            "pm25": 108,
+            "traffic": "High",
+            "pop_density": 18740,
+            "urbanization_score": 0.8354919625416288,
+            "nearest_zone": "Banaswadi",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.663",
+            "lat": 13.027747747747757,
+            "lon": 77.66270270270269,
+            "pm25": 115,
+            "traffic": "High",
+            "pop_density": 20194,
+            "urbanization_score": 0.8156323380869174,
+            "nearest_zone": "Horamavu Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.05_77.663",
+            "lat": 13.05027027027028,
+            "lon": 77.66270270270269,
+            "pm25": 103,
+            "traffic": "High",
+            "pop_density": 17755,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Horamavu Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.073_77.663",
+            "lat": 13.072792792792804,
+            "lon": 77.66270270270269,
+            "pm25": 88,
+            "traffic": "High",
+            "pop_density": 14627,
+            "urbanization_score": 0.8063161959756581,
+            "nearest_zone": "Thanisandra Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.825_77.685",
+            "lat": 12.825045045045046,
+            "lon": 77.68522522522521,
+            "pm25": 107,
+            "traffic": "High",
+            "pop_density": 18499,
+            "urbanization_score": 0.37661105284885216,
+            "nearest_zone": "Electronic City Phase 2",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.848_77.685",
+            "lat": 12.84756756756757,
+            "lon": 77.68522522522521,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19325,
+            "urbanization_score": 0.37398008195686994,
+            "nearest_zone": "Electronic City Phase 2",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.893_77.685",
+            "lat": 12.892612612612616,
+            "lon": 77.68522522522521,
+            "pm25": 112,
+            "traffic": "High",
+            "pop_density": 19561,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Sarjapur Road Main",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.685",
+            "lat": 12.91513513513514,
+            "lon": 77.68522522522521,
+            "pm25": 109,
+            "traffic": "High",
+            "pop_density": 18995,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Sarjapur Road Main",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.938_77.685",
+            "lat": 12.937657657657663,
+            "lon": 77.68522522522521,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19213,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Kadubeesanahalli",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.96_77.685",
+            "lat": 12.960180180180187,
+            "lon": 77.68522522522521,
+            "pm25": 117,
+            "traffic": "High",
+            "pop_density": 20581,
+            "urbanization_score": 0.8057159267988183,
+            "nearest_zone": "HAL Old Airport Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.983_77.685",
+            "lat": 12.98270270270271,
+            "lon": 77.68522522522521,
+            "pm25": 106,
+            "traffic": "High",
+            "pop_density": 18217,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Mahadevapura",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.685",
+            "lat": 13.005225225225233,
+            "lon": 77.68522522522521,
+            "pm25": 115,
+            "traffic": "High",
+            "pop_density": 20044,
+            "urbanization_score": 0.8057159267988183,
+            "nearest_zone": "Ramamurthy Nagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.685",
+            "lat": 13.027747747747757,
+            "lon": 77.68522522522521,
+            "pm25": 107,
+            "traffic": "High",
+            "pop_density": 18443,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Horamavu Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.05_77.685",
+            "lat": 13.05027027027028,
+            "lon": 77.68522522522521,
+            "pm25": 99,
+            "traffic": "High",
+            "pop_density": 16949,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Horamavu Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.893_77.708",
+            "lat": 12.892612612612616,
+            "lon": 77.70774774774773,
+            "pm25": 103,
+            "traffic": "High",
+            "pop_density": 17783,
+            "urbanization_score": 0.37557172666699395,
+            "nearest_zone": "Sarjapur Road Main",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.915_77.708",
+            "lat": 12.91513513513514,
+            "lon": 77.70774774774773,
+            "pm25": 103,
+            "traffic": "High",
+            "pop_density": 17657,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Kadubeesanahalli",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.938_77.708",
+            "lat": 12.937657657657663,
+            "lon": 77.70774774774773,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19361,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Kadubeesanahalli",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.96_77.708",
+            "lat": 12.960180180180187,
+            "lon": 77.70774774774773,
+            "pm25": 114,
+            "traffic": "High",
+            "pop_density": 19988,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Marathahalli Bridge",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.983_77.708",
+            "lat": 12.98270270270271,
+            "lon": 77.70774774774773,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19375,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Doddanekundi",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.708",
+            "lat": 13.005225225225233,
+            "lon": 77.70774774774773,
+            "pm25": 110,
+            "traffic": "High",
+            "pop_density": 19065,
+            "urbanization_score": 0.8065229994102185,
+            "nearest_zone": "Mahadevapura",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.028_77.708",
+            "lat": 13.027747747747757,
+            "lon": 77.70774774774773,
+            "pm25": 97,
+            "traffic": "High",
+            "pop_density": 16405,
+            "urbanization_score": 0.8059246827215039,
+            "nearest_zone": "Ramamurthy Nagar",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.983_77.73",
+            "lat": 12.98270270270271,
+            "lon": 77.73027027027025,
+            "pm25": 117,
+            "traffic": "High",
+            "pop_density": 20402,
+            "urbanization_score": 0.37587445242313033,
+            "nearest_zone": "Whitefield ITPL Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_13.005_77.73",
+            "lat": 13.005225225225233,
+            "lon": 77.73027027027025,
+            "pm25": 104,
+            "traffic": "High",
+            "pop_density": 17999,
+            "urbanization_score": 0.375829280056332,
+            "nearest_zone": "Whitefield ITPL Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.938_77.753",
+            "lat": 12.937657657657663,
+            "lon": 77.75279279279277,
+            "pm25": 118,
+            "traffic": "High",
+            "pop_density": 20657,
+            "urbanization_score": 0.3754856691973374,
+            "nearest_zone": "Varthur Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.96_77.753",
+            "lat": 12.960180180180187,
+            "lon": 77.75279279279277,
+            "pm25": 111,
+            "traffic": "High",
+            "pop_density": 19266,
+            "urbanization_score": 0.37638476195490006,
+            "nearest_zone": "Whitefield Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.983_77.753",
+            "lat": 12.98270270270271,
+            "lon": 77.75279279279277,
+            "pm25": 113,
+            "traffic": "Medium",
+            "pop_density": 19600,
+            "urbanization_score": 0.31901292558274713,
+            "nearest_zone": "Kadugodi",
+            "type": "monitoring",
+            "range_km": 3
+        },
+        {
+            "id": "Grid_12.938_77.775",
+            "lat": 12.937657657657663,
+            "lon": 77.7753153153153,
+            "pm25": 105,
+            "traffic": "High",
+            "pop_density": 18008,
+            "urbanization_score": 0.3767781145798139,
+            "nearest_zone": "Varthur Main Road",
+            "type": "monitoring",
+            "range_km": 3
+        }
+    ],
+    "zones": [
+        {
+            "name": "Vijayanagar",
+            "pm25": 111,
+            "traffic": "High",
+            "total_sensors": 7,
+            "reference_sensors": 0,
+            "monitoring_sensors": 7,
+            "has_reference_sensor": false,
+            "center": [
+                12.960180180180187,
+                77.48252252252252
+            ]
+        },
+        {
+            "name": "Peenya Industrial Area",
+            "pm25": 111,
+            "traffic": "High",
+            "total_sensors": 6,
+            "reference_sensors": 0,
+            "monitoring_sensors": 6,
+            "has_reference_sensor": false,
+            "center": [
+                13.005225225225233,
+                77.48252252252252
+            ]
+        },
+        {
+            "name": "Banashankari 3rd Stage",
+            "pm25": 112,
+            "traffic": "Medium",
+            "total_sensors": 6,
+            "reference_sensors": 0,
+            "monitoring_sensors": 6,
+            "has_reference_sensor": false,
+            "center": [
+                12.91513513513514,
+                77.50504504504504
+            ]
+        },
+        {
+            "name": "Yeshwanthpur",
+            "pm25": 111,
+            "traffic": "High",
+            "total_sensors": 5,
+            "reference_sensors": 0,
+            "monitoring_sensors": 5,
+            "has_reference_sensor": false,
+            "center": [
+                13.005225225225233,
+                77.52756756756756
+            ]
+        },
+        {
+            "name": "JP Nagar 7th Phase",
+            "pm25": 113,
+            "traffic": "Medium",
+            "total_sensors": 4,
+            "reference_sensors": 0,
+            "monitoring_sensors": 4,
+            "has_reference_sensor": false,
+            "center": [
+                12.870090090090093,
+                77.55009009009008
+            ]
+        },
+        {
+            "name": "Banashankari 2nd Stage",
+            "pm25": 112,
+            "traffic": "Medium",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.937657657657663,
+                77.55009009009008
+            ]
+        },
+        {
+            "name": "Mahalaxmi Layout",
+            "pm25": 113,
+            "traffic": "Medium",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                12.960180180180187,
+                77.55009009009008
+            ]
+        },
+        {
+            "name": "Rajajinagar",
+            "pm25": 109,
+            "traffic": "Medium",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                13.005225225225233,
+                77.55009009009008
+            ]
+        },
+        {
+            "name": "Gottigere",
+            "pm25": 110,
+            "traffic": "Medium",
+            "total_sensors": 5,
+            "reference_sensors": 0,
+            "monitoring_sensors": 5,
+            "has_reference_sensor": false,
+            "center": [
+                12.84756756756757,
+                77.5726126126126
+            ]
+        },
+        {
+            "name": "JP Nagar 1st Phase",
+            "pm25": 109,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.91513513513514,
+                77.5726126126126
+            ]
+        },
+        {
+            "name": "Basavanagudi",
+            "pm25": 116,
+            "traffic": "Medium",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.937657657657663,
+                77.5726126126126
+            ]
+        },
+        {
+            "name": "Malleshwaram",
+            "pm25": 118,
+            "traffic": "Medium",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                13.005225225225233,
+                77.5726126126126
+            ]
+        },
+        {
+            "name": "Hebbal",
+            "pm25": 113,
+            "traffic": "High",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                13.05027027027028,
+                77.5726126126126
+            ]
+        },
+        {
+            "name": "Yelahanka New Town",
+            "pm25": 107,
+            "traffic": "Medium",
+            "total_sensors": 3,
+            "reference_sensors": 0,
+            "monitoring_sensors": 3,
+            "has_reference_sensor": false,
+            "center": [
+                13.072792792792804,
+                77.5726126126126
+            ]
+        },
+        {
+            "name": "Yelahanka Old Town",
+            "pm25": 115,
+            "traffic": "Medium",
+            "total_sensors": 3,
+            "reference_sensors": 0,
+            "monitoring_sensors": 3,
+            "has_reference_sensor": false,
+            "center": [
+                13.095315315315327,
+                77.5726126126126
+            ]
+        },
+        {
+            "name": "Jayanagar 5th Block",
+            "pm25": 113,
+            "traffic": "Medium",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.91513513513514,
+                77.59513513513512
+            ]
+        },
+        {
+            "name": "Nagawara",
+            "pm25": 113,
+            "traffic": "Medium",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                13.05027027027028,
+                77.59513513513512
+            ]
+        },
+        {
+            "name": "Bannerghatta Road Main",
+            "pm25": 106,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.892612612612616,
+                77.61765765765765
+            ]
+        },
+        {
+            "name": "Madiwala",
+            "pm25": 119,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 1,
+            "monitoring_sensors": 0,
+            "has_reference_sensor": true,
+            "center": [
+                12.91513513513514,
+                77.61765765765765
+            ]
+        },
+        {
+            "name": "Koramangala 5th Block",
+            "pm25": 115,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.937657657657663,
+                77.61765765765765
+            ]
+        },
+        {
+            "name": "Kammanahalli",
+            "pm25": 115,
+            "traffic": "High",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                13.005225225225233,
+                77.61765765765765
+            ]
+        },
+        {
+            "name": "Manyata Tech Park Main Gate",
+            "pm25": 112,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                13.027747747747757,
+                77.61765765765765
+            ]
+        },
+        {
+            "name": "Thanisandra Main Road",
+            "pm25": 114,
+            "traffic": "High",
+            "total_sensors": 5,
+            "reference_sensors": 0,
+            "monitoring_sensors": 5,
+            "has_reference_sensor": false,
+            "center": [
+                13.05027027027028,
+                77.61765765765765
+            ]
+        },
+        {
+            "name": "Electronic City Phase 1",
+            "pm25": 117,
+            "traffic": "High",
+            "total_sensors": 4,
+            "reference_sensors": 0,
+            "monitoring_sensors": 4,
+            "has_reference_sensor": false,
+            "center": [
+                12.84756756756757,
+                77.64018018018017
+            ]
+        },
+        {
+            "name": "HSR Layout Sector 2",
+            "pm25": 106,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.892612612612616,
+                77.64018018018017
+            ]
+        },
+        {
+            "name": "HSR Layout Sector 1",
+            "pm25": 116,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 1,
+            "monitoring_sensors": 0,
+            "has_reference_sensor": true,
+            "center": [
+                12.91513513513514,
+                77.64018018018017
+            ]
+        },
+        {
+            "name": "Koramangala 7th Block",
+            "pm25": 110,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.937657657657663,
+                77.64018018018017
+            ]
+        },
+        {
+            "name": "Domlur",
+            "pm25": 118,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 1,
+            "monitoring_sensors": 0,
+            "has_reference_sensor": true,
+            "center": [
+                12.960180180180187,
+                77.64018018018017
+            ]
+        },
+        {
+            "name": "Indiranagar",
+            "pm25": 111,
+            "traffic": "High",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                12.98270270270271,
+                77.64018018018017
+            ]
+        },
+        {
+            "name": "Kalyan Nagar",
+            "pm25": 118,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 1,
+            "monitoring_sensors": 0,
+            "has_reference_sensor": true,
+            "center": [
+                13.027747747747757,
+                77.64018018018017
+            ]
+        },
+        {
+            "name": "Electronic City Phase 2",
+            "pm25": 111,
+            "traffic": "High",
+            "total_sensors": 3,
+            "reference_sensors": 0,
+            "monitoring_sensors": 3,
+            "has_reference_sensor": false,
+            "center": [
+                12.825045045045046,
+                77.66270270270269
+            ]
+        },
+        {
+            "name": "Sarjapur Road Main",
+            "pm25": 112,
+            "traffic": "High",
+            "total_sensors": 4,
+            "reference_sensors": 0,
+            "monitoring_sensors": 4,
+            "has_reference_sensor": false,
+            "center": [
+                12.892612612612616,
+                77.66270270270269
+            ]
+        },
+        {
+            "name": "Bellandur",
+            "pm25": 108,
+            "traffic": "High",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                12.91513513513514,
+                77.66270270270269
+            ]
+        },
+        {
+            "name": "HAL Old Airport Road",
+            "pm25": 117,
+            "traffic": "High",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                12.960180180180187,
+                77.66270270270269
+            ]
+        },
+        {
+            "name": "Banaswadi",
+            "pm25": 108,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                13.005225225225233,
+                77.66270270270269
+            ]
+        },
+        {
+            "name": "Horamavu Main Road",
+            "pm25": 115,
+            "traffic": "High",
+            "total_sensors": 4,
+            "reference_sensors": 0,
+            "monitoring_sensors": 4,
+            "has_reference_sensor": false,
+            "center": [
+                13.027747747747757,
+                77.66270270270269
+            ]
+        },
+        {
+            "name": "Kadubeesanahalli",
+            "pm25": 111,
+            "traffic": "High",
+            "total_sensors": 3,
+            "reference_sensors": 0,
+            "monitoring_sensors": 3,
+            "has_reference_sensor": false,
+            "center": [
+                12.937657657657663,
+                77.68522522522521
+            ]
+        },
+        {
+            "name": "Mahadevapura",
+            "pm25": 110,
+            "traffic": "High",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                12.98270270270271,
+                77.68522522522521
+            ]
+        },
+        {
+            "name": "Ramamurthy Nagar",
+            "pm25": 115,
+            "traffic": "High",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                13.005225225225233,
+                77.68522522522521
+            ]
+        },
+        {
+            "name": "Marathahalli Bridge",
+            "pm25": 114,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.960180180180187,
+                77.70774774774773
+            ]
+        },
+        {
+            "name": "Doddanekundi",
+            "pm25": 111,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.98270270270271,
+                77.70774774774773
+            ]
+        },
+        {
+            "name": "Whitefield ITPL Main Road",
+            "pm25": 117,
+            "traffic": "High",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                12.98270270270271,
+                77.73027027027025
+            ]
+        },
+        {
+            "name": "Varthur Main Road",
+            "pm25": 118,
+            "traffic": "High",
+            "total_sensors": 2,
+            "reference_sensors": 0,
+            "monitoring_sensors": 2,
+            "has_reference_sensor": false,
+            "center": [
+                12.937657657657663,
+                77.75279279279277
+            ]
+        },
+        {
+            "name": "Whitefield Main Road",
+            "pm25": 111,
+            "traffic": "High",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.960180180180187,
+                77.75279279279277
+            ]
+        },
+        {
+            "name": "Kadugodi",
+            "pm25": 113,
+            "traffic": "Medium",
+            "total_sensors": 1,
+            "reference_sensors": 0,
+            "monitoring_sensors": 1,
+            "has_reference_sensor": false,
+            "center": [
+                12.98270270270271,
+                77.75279279279277
+            ]
+        }
+    ]
+}

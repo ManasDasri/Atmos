@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atmos - Air Quality Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        .hero-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+        }
+        
+        .overlap-analysis {
+            background: rgba(167, 139, 250, 0.05);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            margin-top: 1.5rem;
+        }
+        
+        .overlap-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .overlap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+        
+        .overlap-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid rgba(167, 139, 250, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .overlap-item:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        
+        .overlap-item-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .overlap-item-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .sensor-type-breakdown {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        
+        .sensor-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid;
+        }
+        
+        .sensor-type-badge.reference {
+            background: rgba(236, 72, 153, 0.1);
+            border-color: rgba(236, 72, 153, 0.3);
+            color: #EC4899;
+        }
+        
+        .sensor-type-badge.monitoring {
+            background: rgba(79, 70, 229, 0.1);
+            border-color: rgba(79, 70, 229, 0.3);
+            color: #4F46E5;
+        }
+    </style>
+</head>
+<body>
+    <div id="notification-bar" class="notification-bar" style="display: none;">
+        <div class="status-icon">
+            <div class="pulse"></div>
+        </div>
+        <div class="notification-content">
+            <span id="notification-text">Loading...</span>
+            <span id="notification-timestamp" class="timestamp"></span>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">🌿 ATMOS</div>
+            <nav>
+                <ul>
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/compare">Compare</a></li>
+                    <li><a href="/coverage">Coverage</a></li>
+                    <li><a href="/deployment">Deploy</a></li>
+                    <li><a href="/query">Query</a></li>
+                    <li><a href="/info">Info</a></li>
+                    <li><a href="/contrast">Contrast</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Stats -->
+        <div class="card hero-card fade-in">
+            <div class="card-header">
+                <h1 class="card-title">🌬️ Hybrid Air Quality Monitoring System</h1>
+                <button class="btn btn-primary" id="optimize-btn">
+                    🔄 Re-Optimize
+                </button>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Sensors Deployed</div>
+                    <div class="stat-value" id="total-sensors">--</div>
+                    <div class="sensor-type-breakdown">
+                        <span class="sensor-type-badge reference">
+                            🔬 <span id="reference-sensors">--</span> Reference (4km)
+                        </span>
+                        <span class="sensor-type-badge monitoring">
+                            📊 <span id="monitoring-sensors">--</span> Monitoring (3km)
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="stat-card success">
+                    <div class="stat-label">Effective Coverage</div>
+                    <div class="stat-value" id="coverage-area">--</div>
+                    <div class="stat-subtitle">
+                        <span id="coverage-percentage">--</span>% of Bengaluru (1,323 km²)
+                    </div>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-label">Average PM2.5</div>
+                    <div class="stat-value" id="avg-aqi">--</div>
+                    <div class="stat-subtitle">
+                        Across <span id="total-zones">--</span> zones monitored
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Investment</div>
+                    <div class="stat-value" id="total-cost">--</div>
+                    <div class="stat-subtitle">Within ₹25L budget (99.6% used)</div>
+                </div>
+            </div>
+
+            <!-- Overlap Analysis Section -->
+            <div class="overlap-analysis">
+                <div class="overlap-title">
+                    📐 Coverage Analysis with Overlap Calculation
+                </div>
+                <div class="overlap-grid">
+                    <div class="overlap-item">
+                        <div class="overlap-item-label">Theoretical Max</div>
+                        <div class="overlap-item-value" id="theoretical-coverage">--</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+                            Without overlap
+                        </div>
+                    </div>
+                    <div class="overlap-item">
+                        <div class="overlap-item-label">Overlap Detected</div>
+                        <div class="overlap-item-value" style="color: var(--warning);" id="overlap-percentage">--</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+                            Mathematically calculated
+                        </div>
+                    </div>
+                    <div class="overlap-item">
+                        <div class="overlap-item-label">Effective Coverage</div>
+                        <div class="overlap-item-value" style="color: var(--success);" id="effective-coverage">--</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+                            After deducting overlap
+                        </div>
+                    </div>
+                    <div class="overlap-item">
+                        <div class="overlap-item-label">Coverage Efficiency</div>
+                        <div class="overlap-item-value" style="color: var(--accent-primary);" id="coverage-efficiency">--</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+                            Effective/Theoretical
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+                    💡 <strong>Note:</strong> Our system uses haversine distance calculations and circle intersection formulas 
+                    to accurately compute overlapping coverage areas between sensors. This ensures realistic coverage estimates 
+                    rather than optimistic theoretical maximums.
+                </p>
+            </div>
+        </div>
+
+        <!-- Map and Chart -->
+        <div class="grid-2">
+            <div class="card fade-in">
+                <h2 class="card-title">🗺️ Sensor Network Map</h2>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+                    Reference sensors (pink) have 4km range, Monitoring sensors (purple) have 3km range
+                </p>
+                <div id="map"></div>
+            </div>
+
+            <div class="card fade-in">
+                <h2 class="card-title">📊 Top 10 Polluted Zones</h2>
+                <div class="chart-container">
+                    <canvas id="aqi-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone Coverage Table -->
+        <div class="card fade-in">
+            <h2 class="card-title">📋 Zone-wise Sensor Allocation</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                Priority-based allocation: Higher pollution + traffic = more sensors
+            </p>
+            <div id="zones-table"></div>
+        </div>
+
+        <!-- Best and Worst -->
+        <div class="grid-2">
+            <div class="card fade-in">
+                <h3 style="color: var(--danger); margin-bottom: 1rem; font-size: 1.25rem;">🚨 Highest Pollution Zone</h3>
+                <div class="stat-card danger">
+                    <div class="stat-label">Most Critical Area</div>
+                    <div class="stat-value" id="worst-zone" style="font-size: 1.75rem;">--</div>
+                    <div class="stat-subtitle">Requires immediate intervention</div>
+                </div>
+            </div>
+            <div class="card fade-in">
+                <h3 style="color: var(--success); margin-bottom: 1rem; font-size: 1.25rem;">✨ Cleanest Air Quality</h3>
+                <div class="stat-card success">
+                    <div class="stat-label">Best Performing Zone</div>
+                    <div class="stat-value" id="best-zone" style="font-size: 1.75rem;">--</div>
+                    <div class="stat-subtitle">Benchmark for city planning</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="{{ url_for('static', path='app.js') }}"></script>
+    <script>
+        // Page-specific initialization with comprehensive error handling
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                console.log('Loading dashboard data...');
+                
+                // Load both model and stats data
+                const [model, stats] = await Promise.all([
+                    loadModelData(),
+                    loadStatistics()
+                ]);
+                
+                if (!model) {
+                    throw new Error('Failed to load model data');
+                }
+                
+                if (!stats) {
+                    console.warn('Stats not available, using model data');
+                }
+                
+                // FIXED: Update overlap info with correct field names and null checks
+                const theoreticalCoverage = model.theoretical_coverage_km2 || 0;
+                const overlapPercentage = model.overlap_percentage || 0;
+                const effectiveCoverage = model.effective_coverage_km2 || 0;
+                
+                // Update overlap analysis section
+                const theoreticalEl = document.getElementById('theoretical-coverage');
+                const overlapEl = document.getElementById('overlap-percentage');
+                const effectiveEl = document.getElementById('effective-coverage');
+                const efficiencyEl = document.getElementById('coverage-efficiency');
+                
+                if (theoreticalEl) {
+                    theoreticalEl.textContent = `${theoreticalCoverage.toFixed(1)} km²`;
+                }
+                if (overlapEl) {
+                    overlapEl.textContent = `${overlapPercentage.toFixed(1)}%`;
+                }
+                if (effectiveEl) {
+                    effectiveEl.textContent = `${effectiveCoverage.toFixed(1)} km²`;
+                }
+                
+                // Calculate efficiency percentage with null check
+                if (efficiencyEl && theoreticalCoverage > 0) {
+                    const efficiency = ((effectiveCoverage / theoreticalCoverage) * 100);
+                    if (typeof animateValue === 'function') {
+                        animateValue(efficiencyEl, 0, efficiency, 1500, (val) => val.toFixed(1) + '%');
+                    } else {
+                        efficiencyEl.textContent = efficiency.toFixed(1) + '%';
+                    }
+                } else if (efficiencyEl) {
+                    efficiencyEl.textContent = '0.0%';
+                }
+                
+                // Update main stats with proper error handling
+                if (stats && typeof updateStatsDisplay === 'function') {
+                    updateStatsDisplay(stats);
+                } else {
+                    console.warn('updateStatsDisplay not available or stats missing, updating manually');
+                    
+                    // Manual update as fallback with null checks
+                    const totalSensorsEl = document.getElementById('total-sensors');
+                    if (totalSensorsEl) {
+                        const totalSensors = model.total_sensors || 67;
+                        if (typeof animateValue === 'function') {
+                            animateValue(totalSensorsEl, 0, totalSensors, 1500);
+                        } else {
+                            totalSensorsEl.textContent = totalSensors;
+                        }
+                    }
+                    
+                    const refSensorsEl = document.getElementById('reference-sensors');
+                    if (refSensorsEl) refSensorsEl.textContent = model.reference_sensors || 4;
+                    
+                    const monSensorsEl = document.getElementById('monitoring-sensors');
+                    if (monSensorsEl) monSensorsEl.textContent = model.monitoring_sensors || 63;
+                    
+                    const coverageAreaEl = document.getElementById('coverage-area');
+                    if (coverageAreaEl) coverageAreaEl.textContent = `${effectiveCoverage.toFixed(1)} km²`;
+                    
+                    const coveragePctEl = document.getElementById('coverage-percentage');
+                    if (coveragePctEl) {
+                        const coveragePct = model.coverage_percentage || 0;
+                        if (typeof animateValue === 'function') {
+                            animateValue(coveragePctEl, 0, coveragePct, 1500, (val) => val.toFixed(1));
+                        } else {
+                            coveragePctEl.textContent = coveragePct.toFixed(1);
+                        }
+                    }
+                    
+                    // Update other stats
+                    const totalZonesEl = document.getElementById('total-zones');
+                    if (totalZonesEl && model.zones) totalZonesEl.textContent = model.zones.length;
+                    
+                    const avgAqiEl = document.getElementById('avg-aqi');
+                    if (avgAqiEl && model.zones && model.zones.length > 0) {
+                        const avgAqi = model.zones.reduce((sum, z) => sum + (z.pm25 || 0), 0) / model.zones.length;
+                        if (typeof animateValue === 'function') {
+                            animateValue(avgAqiEl, 0, avgAqi, 1500, (val) => val.toFixed(1));
+                        } else {
+                            avgAqiEl.textContent = avgAqi.toFixed(1);
+                        }
+                    }
+                    
+                    const totalCostEl = document.getElementById('total-cost');
+                    if (totalCostEl && typeof formatCurrency === 'function') {
+                        totalCostEl.textContent = formatCurrency(model.total_cost || 2490000);
+                    } else if (totalCostEl) {
+                        totalCostEl.textContent = '₹24.9L';
+                    }
+                    
+                    // Update worst and best zones
+                    if (model.zones && model.zones.length > 0) {
+                        const sortedZones = [...model.zones].sort((a, b) => (b.pm25 || 0) - (a.pm25 || 0));
+                        
+                        const worstZoneEl = document.getElementById('worst-zone');
+                        if (worstZoneEl && sortedZones[0]) {
+                            worstZoneEl.textContent = `${sortedZones[0].name} (${sortedZones[0].pm25})`;
+                        }
+                        
+                        const bestZoneEl = document.getElementById('best-zone');
+                        if (bestZoneEl && sortedZones[sortedZones.length - 1]) {
+                            bestZoneEl.textContent = `${sortedZones[sortedZones.length - 1].name} (${sortedZones[sortedZones.length - 1].pm25})`;
+                        }
+                    }
+                }
+                
+                // Initialize visualizations with error handling
+               // Initialize visualizations with error handling
+if (model.zones && model.zones.length > 0) {
+    const zonesTableEl = document.getElementById('zones-table');
+    if (zonesTableEl) {
+        if (typeof renderZonesTable === 'function') {
+            renderZonesTable(model.zones);
+        } else {
+            console.error('renderZonesTable function not found');
+            zonesTableEl.innerHTML = '<p style="color: var(--danger);">Failed to render zones table.</p>';
+        }
+    }
+    
+    const mapEl = document.getElementById('map');
+    if (mapEl) {
+        if (typeof initializeMap === 'function') {
+            // CRITICAL FIX: Pass full model object, not just zones
+            initializeMap(model, 'map');
+        } else {
+            console.error('initializeMap function not found');
+            mapEl.innerHTML = '<p style="color: var(--danger);">Failed to initialize map.</p>';
+        }
+    }
+                    
+                    const chartEl = document.getElementById('aqi-chart');
+                    if (chartEl) {
+                        if (typeof initializeChart === 'function') {
+                            initializeChart(model.zones);
+                        } else {
+                            console.error('initializeChart function not found');
+                            if (chartEl.parentElement) {
+                                chartEl.parentElement.innerHTML = '<p style="color: var(--danger);">Failed to initialize chart.</p>';
+                            }
+                        }
+                    }
+                }
+                
+                // Setup optimize button with error handling
+                const optimizeBtn = document.getElementById('optimize-btn');
+                if (optimizeBtn) {
+                    if (typeof triggerOptimization === 'function') {
+                        optimizeBtn.addEventListener('click', triggerOptimization);
+                    } else {
+                        console.error('triggerOptimization function not found');
+                        optimizeBtn.disabled = true;
+                        optimizeBtn.title = 'Optimization function not available';
+                    }
+                }
+                
+                console.log('Dashboard loaded successfully');
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                
+                // Show user-friendly error
+                const errorHTML = `
+                    <div style="padding: 2rem; text-align: center; color: var(--danger);">
+                        <h3>⚠️ Failed to Load Dashboard</h3>
+                        <p>${error.message}</p>
+                        <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 1rem;">
+                            🔄 Reload Page
+                        </button>
+                    </div>
+                `;
+                
+                // Update stat displays with error state
+                ['total-sensors', 'coverage-area', 'avg-aqi', 'total-cost', 
+                 'theoretical-coverage', 'overlap-percentage', 'effective-coverage', 'coverage-efficiency'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = 'Error';
+                });
+                
+                // Show error in visualizations
+                const mapEl = document.getElementById('map');
+                if (mapEl) mapEl.innerHTML = errorHTML;
+                
+                const chartEl = document.getElementById('aqi-chart');
+                if (chartEl && chartEl.parentElement) {
+                    chartEl.parentElement.innerHTML = errorHTML;
+                }
+                
+                const tableEl = document.getElementById('zones-table');
+                if (tableEl) tableEl.innerHTML = errorHTML;
+            }
+        });
+    </script>
+</body>
+</html>

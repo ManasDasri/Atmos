@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sensor Deployment Plan - Atmos</title>
+        <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <style>
+            .deployment-header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 3rem 2rem;
+                border-radius: 20px;
+                margin-bottom: 2rem;
+                text-align: center;
+                box-shadow: var(--shadow-xl), var(--glow-purple);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .deployment-header::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                animation: pulse 3s infinite;
+            }
+            
+            .deployment-header h1 {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+                position: relative;
+                z-index: 1;
+            }
+            
+            .deployment-stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 1.5rem;
+                margin: 2rem 0;
+                position: relative;
+                z-index: 1;
+            }
+            
+            .deployment-stat {
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                padding: 1.5rem;
+                border-radius: 16px;
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                transition: all 0.3s ease;
+            }
+            
+            .deployment-stat:hover {
+                background: rgba(255, 255, 255, 0.25);
+                transform: translateY(-5px);
+            }
+            
+            .deployment-stat-value {
+                font-size: 2.5rem;
+                font-weight: 800;
+                margin-bottom: 0.5rem;
+            }
+            
+            .deployment-stat-label {
+                font-size: 0.875rem;
+                opacity: 0.95;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            
+            .zone-deployment {
+                margin-bottom: 2rem;
+                border-radius: 16px;
+                overflow: hidden;
+                border: 1px solid rgba(167, 139, 250, 0.2);
+                transition: all 0.3s ease;
+            }
+            
+            .zone-deployment:hover {
+                border-color: var(--accent-primary);
+                box-shadow: var(--shadow-lg), var(--glow-purple);
+            }
+            
+            .zone-header {
+                background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(236, 72, 153, 0.1) 100%);
+                padding: 1.75rem;
+                border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+            }
+            
+            .zone-header h3 {
+                margin-bottom: 0.75rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                flex-wrap: wrap;
+                color: var(--text-primary);
+                font-size: 1.25rem;
+            }
+            
+            .zone-meta {
+                display: flex;
+                gap: 2rem;
+                flex-wrap: wrap;
+                font-size: 0.875rem;
+                color: var(--text-secondary);
+                margin-top: 0.75rem;
+            }
+            
+            .zone-meta span {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .sensor-list {
+                background: var(--bg-card);
+                padding: 1.5rem;
+            }
+            
+            .sensor-item {
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                gap: 1.5rem;
+                padding: 1rem;
+                border-bottom: 1px solid rgba(167, 139, 250, 0.1);
+                align-items: center;
+                transition: all 0.3s ease;
+            }
+            
+            .sensor-item:hover {
+                background: rgba(167, 139, 250, 0.05);
+                padding-left: 1.5rem;
+            }
+            
+            .sensor-item:last-child {
+                border-bottom: none;
+            }
+            
+            .sensor-number {
+                width: 44px;
+                height: 44px;
+                background: var(--accent-gradient);
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 800;
+                font-size: 1.1rem;
+                box-shadow: var(--shadow), var(--glow-purple);
+                transition: all 0.3s ease;
+            }
+            
+            .sensor-item:hover .sensor-number {
+                transform: scale(1.1) rotate(5deg);
+            }
+            
+            .sensor-number.reference {
+                background: var(--accent-gradient-2);
+                box-shadow: var(--shadow), var(--glow-pink);
+            }
+            
+            .sensor-details h4 {
+                margin-bottom: 0.25rem;
+                color: var(--text-primary);
+                font-weight: 700;
+            }
+            
+            .sensor-landmark {
+                color: var(--text-secondary);
+                font-size: 0.875rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .sensor-coords {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.813rem;
+                color: var(--accent-primary);
+                background: rgba(167, 139, 250, 0.1);
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                border: 1px solid rgba(167, 139, 250, 0.2);
+            }
+            
+            #deployment-map {
+                height: 600px;
+                border-radius: 16px;
+                margin-bottom: 2rem;
+                border: 1px solid rgba(167, 139, 250, 0.2);
+                box-shadow: var(--shadow-lg);
+            }
+            
+            .map-legend {
+                background: var(--bg-card);
+                padding: 1.5rem;
+                border-radius: 16px;
+                margin-bottom: 1.5rem;
+                box-shadow: var(--shadow);
+                border: 1px solid rgba(167, 139, 250, 0.2);
+            }
+
+            .legend-title {
+                font-weight: 700;
+                margin-bottom: 1rem;
+                color: var(--accent-primary);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-size: 0.875rem;
+            }
+
+            .legend-items {
+                display: flex;
+                gap: 2rem;
+                flex-wrap: wrap;
+            }
+
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                font-size: 0.875rem;
+                color: var(--text-secondary);
+            }
+
+            .legend-circle {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                border: 2px solid white;
+                box-shadow: var(--shadow-sm);
+            }
+
+            .legend-coverage {
+                width: 40px;
+                height: 24px;
+                border-radius: 12px;
+                background: rgba(79, 70, 229, 0.2);
+                border: 2px solid #4F46E5;
+            }
+            
+            .reference-badge {
+                background: var(--accent-gradient-2);
+                color: white;
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                font-size: 0.75rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+            }
+            
+            .loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(15, 15, 30, 0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                backdrop-filter: blur(10px);
+            }
+            
+            .loading-content {
+                text-align: center;
+                color: var(--text-primary);
+            }
+            
+            .loading-spinner {
+                width: 60px;
+                height: 60px;
+                border: 4px solid rgba(167, 139, 250, 0.2);
+                border-top-color: var(--accent-primary);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 1rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p style="font-size: 1.1rem; font-weight: 600;">Loading deployment data...</p>
+            </div>
+        </div>
+
+        <div id="notification-bar" class="notification-bar" style="display: none;">
+            <div class="status-icon">
+                <div class="pulse"></div>
+            </div>
+            <div class="notification-content">
+                <span id="notification-text">Loading...</span>
+                <span id="notification-timestamp" class="timestamp"></span>
+            </div>
+        </div>
+
+        <header>
+            <div class="header-content">
+                <div class="logo">🌿 ATMOS</div>
+                <nav>
+                    <ul>
+                        <li><a href="/">Dashboard</a></li>
+                        <li><a href="/compare">Compare</a></li>
+                        <li><a href="/coverage">Coverage</a></li>
+                        <li><a href="/deployment">Deploy</a></li>
+                        <li><a href="/query">Query</a></li>
+                        <li><a href="/info">Info</a></li>
+                        <li><a href="/contrast">Contrast</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="deployment-header">
+                <h1>📡 Sensor Deployment Plan</h1>
+                <p style="font-size: 1.1rem; opacity: 0.95;">Optimized hybrid placement strategy for maximum coverage across Bengaluru</p>
+                
+                <div class="deployment-stats">
+                    <div class="deployment-stat">
+                        <div class="deployment-stat-value" id="total-sensors-deploy">--</div>
+                        <div class="deployment-stat-label">Total Sensors</div>
+                    </div>
+                    <div class="deployment-stat">
+                        <div class="deployment-stat-value" id="ref-sensors">--</div>
+                        <div class="deployment-stat-label">Reference (4km)</div>
+                    </div>
+                    <div class="deployment-stat">
+                        <div class="deployment-stat-value" id="mon-sensors">--</div>
+                        <div class="deployment-stat-label">Monitoring (3km)</div>
+                    </div>
+                    <div class="deployment-stat">
+                        <div class="deployment-stat-value" id="coverage-percentage">--</div>
+                        <div class="deployment-stat-label">Area Coverage</div>
+                    </div>
+                    <div class="deployment-stat">
+                        <div class="deployment-stat-value" id="effective-coverage-stat">--</div>
+                        <div class="deployment-stat-label">Effective Area</div>
+                    </div>
+                    <div class="deployment-stat">
+                        <div class="deployment-stat-value" id="overlap-stat">--</div>
+                        <div class="deployment-stat-label">Overlap</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <h2 class="card-title">📍 Deployment Map with Coverage Zones</h2>
+                
+                <div class="map-legend">
+                    <div class="legend-title">Map Legend</div>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <div class="legend-circle" style="background: linear-gradient(135deg, #EC4899 0%, #F5576C 100%);"></div>
+                            <span>Reference Sensor (4km range)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-circle" style="background: linear-gradient(135deg, #4F46E5 0%, #764BA2 100%);"></div>
+                            <span>Monitoring Sensor (3km range)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-coverage"></div>
+                            <span>Coverage Area</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="deployment-map"></div>
+                
+                <div style="background: rgba(167, 139, 250, 0.05); padding: 1.5rem; border-radius: 16px; margin-top: 1rem; border: 1px solid rgba(167, 139, 250, 0.2);">
+                    <p style="color: var(--text-secondary); margin: 0; line-height: 1.6;">
+                        💡 <strong style="color: var(--accent-primary);">Interactive Map:</strong> Coverage circles show actual sensor ranges. 
+                        Pink markers/circles = Reference sensors (4km radius), Purple markers/circles = Monitoring sensors (3km radius). 
+                        Hover over coverage areas to see sensor details. Click markers for complete zone information. Overlap is mathematically calculated and accounted for in effective coverage.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <h2 class="card-title">🎯 Zone-wise Sensor Deployment Details</h2>
+                <div id="deployment-details">Loading...</div>
+            </div>
+        </div>
+
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="{{ url_for('static', path='app.js') }}"></script>
+        <script src="{{ url_for('static', path='deployment.js') }}"></script>
+        <script>
+            // FIXED: Proper initialization with map positioning fix
+            window.addEventListener('load', async () => {
+                const loadingOverlay = document.getElementById('loading-overlay');
+                
+                // Wait for layout to fully settle
+                await new Promise(resolve => setTimeout(resolve, 200));
+                
+                try {
+                    console.log('🚀 Starting deployment page initialization...');
+                    
+                    // Fetch model data
+                    const response = await fetch('/api/model');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const model = await response.json();
+                    console.log('📊 Model loaded:', {
+                        zones: model.zones?.length,
+                        sensors: model.all_sensors?.length
+                    });
+                    
+                    if (!model || !model.zones) {
+                        throw new Error('Invalid model data structure');
+                    }
+                    
+                    // Update stats
+                    document.getElementById('total-sensors-deploy').textContent = model.total_sensors || 67;
+                    document.getElementById('ref-sensors').textContent = model.reference_sensors || 4;
+                    document.getElementById('mon-sensors').textContent = model.monitoring_sensors || 63;
+                    document.getElementById('coverage-percentage').textContent = (model.coverage_percentage || 0).toFixed(1) + '%';
+                    document.getElementById('effective-coverage-stat').textContent = (model.effective_coverage_km2 || 0).toFixed(1) + ' km²';
+                    document.getElementById('overlap-stat').textContent = (model.overlap_percentage || 0).toFixed(1) + '%';
+                    
+                    // Initialize map
+                    console.log('🗺️ Initializing deployment map...');
+                    if (typeof initializeDeploymentMap === 'function') {
+                        const map = initializeDeploymentMap(model);
+                        console.log('✅ Map initialized');
+                        
+                        // CRITICAL FIX: Force map to recalculate size and re-center
+                        setTimeout(() => {
+                            console.log('🔧 Fixing map positioning and SVG rendering...');
+                            
+                            // Force map recalculation
+                            map.invalidateSize(true);
+                            map.setView([12.9716, 77.5946], 11);
+                            
+                            // Force SVG re-render to fix positioning
+                            const svg = document.querySelector('.leaflet-overlay-pane svg');
+                            if (svg) {
+                                svg.style.display = 'none';
+                                svg.offsetHeight; // Force reflow
+                                svg.style.display = 'block';
+                                console.log('✅ SVG re-rendered');
+                            }
+                            
+                            // Store map instance globally for debugging
+                            window.debugMap = map;
+                            
+                            console.log('✅ Map positioning fixed');
+                        }, 500);
+                    } else {
+                        console.error('❌ initializeDeploymentMap function not found');
+                    }
+                    
+                    // Render deployment details
+                    console.log('📝 Rendering deployment details...');
+                    if (typeof renderDeploymentDetails === 'function') {
+                        renderDeploymentDetails(model.zones);
+                        console.log('✅ Details rendered');
+                    } else {
+                        console.error('❌ renderDeploymentDetails function not found');
+                    }
+                    
+                    // Hide loading overlay
+                    if (loadingOverlay) {
+                        loadingOverlay.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingOverlay.style.display = 'none';
+                        }, 300);
+                    }
+                    
+                    console.log('✅ Deployment page fully initialized!');
+                    
+                } catch (error) {
+                    console.error('❌ Error loading deployment data:', error);
+                    
+                    // Show error in UI
+                    const errorMessage = `
+                        <div style="padding: 2rem; text-align: center; color: var(--danger);">
+                            <h3>⚠️ Error Loading Data</h3>
+                            <p>${error.message}</p>
+                            <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 1rem;">
+                                Check console for details or refresh the page.
+                            </p>
+                            <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 1rem;">
+                                🔄 Reload Page
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Update stat displays with error state
+                    ['total-sensors-deploy', 'ref-sensors', 'mon-sensors', 'coverage-percentage', 'effective-coverage-stat', 'overlap-stat'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.textContent = 'Error';
+                    });
+                    
+                    const detailsContainer = document.getElementById('deployment-details');
+                    if (detailsContainer) {
+                        detailsContainer.innerHTML = errorMessage;
+                    }
+                    
+                    const mapContainer = document.getElementById('deployment-map');
+                    if (mapContainer) {
+                        mapContainer.innerHTML = errorMessage;
+                    }
+                    
+                    // Hide loading overlay
+                    if (loadingOverlay) {
+                        loadingOverlay.style.display = 'none';
+                    }
+                }
+            });
+        </script>
+    </body>
+    </html>

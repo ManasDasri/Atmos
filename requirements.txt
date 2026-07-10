@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+jinja2
+pulp
+shapely
+pyproj
+requests
+scikit-learn
+pandas
+numpy

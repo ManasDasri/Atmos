@@ -1,8 +1,8 @@
-# Breathe Bengaluru – Hybrid Air Quality Monitoring
+# Atmos – Hybrid Air Quality Monitoring
 
 ## Overview
 
-Breathe Bengaluru is a Python + FastAPI project that simulates and optimizes air quality sensor placement across Bengaluru. The system combines real-time WAQI data, traffic-weighted zone analysis, and optimization algorithms to propose an efficient sensor network that is cheaper and more effective than the existing CAAQMS stations.
+Atmos is a Python + FastAPI project that simulates and optimizes air quality sensor placement across the city. The system combines real-time WAQI data, traffic-weighted zone analysis, and optimization algorithms to propose an efficient sensor network that is cheaper and more effective than the existing CAAQMS stations.
 
 **Key features:**
 * Fetch live PM2.5 and AQI readings for Bengaluru from WAQI API.

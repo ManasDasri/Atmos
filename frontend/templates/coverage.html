@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Coverage - Atmos</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        .coverage-legend {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+        
+        .legend-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.875rem;
+        }
+        
+        .legend-items {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .legend-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: var(--shadow-sm);
+        }
+    </style>
+</head>
+<body>
+    <div id="notification-bar" class="notification-bar" style="display: none;">
+        <div class="status-icon">
+            <div class="pulse"></div>
+        </div>
+        <div class="notification-content">
+            <span id="notification-text">Loading...</span>
+            <span id="notification-timestamp" class="timestamp"></span>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">🌿 ATMOS</div>
+            <nav>
+                <ul>
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/compare">Compare</a></li>
+                    <li><a href="/coverage">Coverage</a></li>
+                    <li><a href="/deployment">Deploy</a></li>
+                    <li><a href="/query">Query</a></li>
+                    <li><a href="/info">Info</a></li>
+                    <li><a href="/contrast">Contrast</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card fade-in">
+            <h1 class="card-title">📍 Sensor Coverage Map</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Interactive map showing hybrid sensor network distribution across Bengaluru
+            </p>
+
+            <div id="map"></div>
+
+            <div class="coverage-legend">
+                <div class="legend-title">Map Legend</div>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);"></div>
+                        <span>Good (0-50 µg/m³)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);"></div>
+                        <span>Moderate (51-100 µg/m³)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);"></div>
+                        <span>Unhealthy (101-150 µg/m³)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);"></div>
+                        <span>Very Unhealthy (151-200 µg/m³)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: linear-gradient(135deg, #9333EA 0%, #7C3AED 100%);"></div>
+                        <span>Hazardous (200+ µg/m³)</span>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">
+                    <strong>Note:</strong> Marker size represents number of sensors in that zone. 
+                    Reference sensors (4km range) are shown with pink glow, monitoring sensors (3km range) with purple glow.
+                    Click on markers for detailed information.
+                </p>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            <h2 class="card-title">📊 Coverage Statistics</h2>
+            
+            <div class="stats-grid" style="margin-top: 1.5rem;">
+                <div class="stat-card">
+                    <div class="stat-label">Total Sensors</div>
+                    <div class="stat-value" id="total-sensors-coverage">--</div>
+                    <div class="stat-subtitle">
+                        <span id="ref-sensors-count">--</span> Reference + 
+                        <span id="mon-sensors-count">--</span> Monitoring
+                    </div>
+                </div>
+
+                <div class="stat-card success">
+                    <div class="stat-label">Zones Covered</div>
+                    <div class="stat-value" id="zones-covered">--</div>
+                    <div class="stat-subtitle">Major areas monitored</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Average Sensors/Zone</div>
+                    <div class="stat-value" id="avg-sensors">--</div>
+                    <div class="stat-subtitle">Distribution ratio</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Effective Coverage</div>
+                    <div class="stat-value" id="coverage-area">--</div>
+                    <div class="stat-subtitle">
+                        <span id="coverage-percentage-display">--</span>% of city
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overlap Analysis -->
+            <div style="background: rgba(167, 139, 250, 0.05); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(167, 139, 250, 0.2); margin-top: 1.5rem;">
+                <h3 style="color: var(--accent-primary); margin-bottom: 1rem; font-size: 1.1rem;">📐 Coverage Analysis</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Theoretical Max</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);" id="theoretical-coverage">--</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Overlap</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--warning);" id="overlap-percentage">--</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Actual Coverage</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);" id="effective-coverage">--</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">City Area</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);" id="city-area">1,323 km²</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            <h2 class="card-title">🗺️ Zone-wise Sensor Distribution</h2>
+            <div id="zones-table"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', path='app.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                console.log('Loading coverage page data...');
+                
+                // Load model data with error handling
+                const model = await loadModelData();
+                if (!model) {
+                    throw new Error('Failed to load model data');
+                }
+
+                // FIXED: Use correct field names with null checks and proper defaults
+                const totalSensors = model.total_sensors || 67;
+                const refSensors = model.reference_sensors || 4;
+                const monSensors = model.monitoring_sensors || 63;
+                const effectiveCoverage = model.effective_coverage_km2 || 0;
+                const coveragePercentage = model.coverage_percentage || 0;
+                const theoreticalCoverage = model.theoretical_coverage_km2 || 0;
+                const overlapPercentage = model.overlap_percentage || 0;
+                
+                // Animate total sensors with null check
+                const totalSensorsEl = document.getElementById('total-sensors-coverage');
+                if (totalSensorsEl && typeof animateValue === 'function') {
+                    animateValue(totalSensorsEl, 0, totalSensors, 1500);
+                } else if (totalSensorsEl) {
+                    totalSensorsEl.textContent = totalSensors;
+                }
+                
+                // Update reference and monitoring counts with null checks
+                const refSensorsEl = document.getElementById('ref-sensors-count');
+                const monSensorsEl = document.getElementById('mon-sensors-count');
+                if (refSensorsEl) refSensorsEl.textContent = refSensors;
+                if (monSensorsEl) monSensorsEl.textContent = monSensors;
+                
+                // Update zones covered
+                const zonesCoveredEl = document.getElementById('zones-covered');
+                if (zonesCoveredEl && model.zones) {
+                    zonesCoveredEl.textContent = model.zones.length;
+                }
+                
+                // Calculate and display average sensors per zone
+                if (model.zones && model.zones.length > 0) {
+                    const avgSensors = (totalSensors / model.zones.length).toFixed(1);
+                    const avgSensorsEl = document.getElementById('avg-sensors');
+                    if (avgSensorsEl && typeof animateValue === 'function') {
+                        animateValue(avgSensorsEl, 0, parseFloat(avgSensors), 1500, (val) => val.toFixed(1));
+                    } else if (avgSensorsEl) {
+                        avgSensorsEl.textContent = avgSensors;
+                    }
+                }
+
+                // FIXED: Update coverage area using effective_coverage_km2
+                const coverageAreaEl = document.getElementById('coverage-area');
+                if (coverageAreaEl) {
+                    coverageAreaEl.textContent = `${effectiveCoverage.toFixed(1)} km²`;
+                }
+                
+                // Update coverage percentage
+                const coveragePctEl = document.getElementById('coverage-percentage-display');
+                if (coveragePctEl && typeof animateValue === 'function') {
+                    animateValue(coveragePctEl, 0, coveragePercentage, 1500, (val) => val.toFixed(1));
+                } else if (coveragePctEl) {
+                    coveragePctEl.textContent = coveragePercentage.toFixed(1);
+                }
+
+                // Update overlap analysis with null checks
+                const theoreticalEl = document.getElementById('theoretical-coverage');
+                const overlapEl = document.getElementById('overlap-percentage');
+                const effectiveEl = document.getElementById('effective-coverage');
+                
+                if (theoreticalEl) {
+                    theoreticalEl.textContent = `${theoreticalCoverage.toFixed(1)} km²`;
+                }
+                if (overlapEl) {
+                    overlapEl.textContent = `${overlapPercentage.toFixed(1)}%`;
+                }
+                if (effectiveEl) {
+                    effectiveEl.textContent = `${effectiveCoverage.toFixed(1)} km²`;
+                }
+
+                // Initialize map with error handling
+                const mapEl = document.getElementById('map');
+                if (mapEl) {
+                    if (typeof initializeMap === 'function') {
+    console.log('Initializing map...');
+    initializeMap(model, 'map');
+                    } else {
+                        console.error('initializeMap function not found');
+                        mapEl.innerHTML = '<p style="color: var(--danger); padding: 2rem; text-align: center;">Map initialization failed. Please refresh the page.</p>';
+                    }
+                } else {
+                    console.error('Map container not found');
+                }
+
+                // Render table with error handling
+                const tableEl = document.getElementById('zones-table');
+                if (tableEl) {
+                    if (typeof renderZonesTable === 'function') {
+                        console.log('Rendering zones table...');
+                        renderZonesTable(model.zones, 'zones-table');
+                    } else {
+                        console.error('renderZonesTable function not found');
+                        tableEl.innerHTML = '<p style="color: var(--danger); padding: 2rem; text-align: center;">Table rendering failed. Please refresh the page.</p>';
+                    }
+                } else {
+                    console.error('Zones table container not found');
+                }
+                
+                console.log('Coverage page loaded successfully');
+                
+            } catch (error) {
+                console.error('Error loading coverage page:', error);
+                
+                // Show user-friendly error
+                const errorHTML = `
+                    <div style="padding: 2rem; text-align: center; color: var(--danger);">
+                        <h3>⚠️ Failed to Load Coverage Data</h3>
+                        <p>${error.message}</p>
+                        <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 1rem;">
+                            🔄 Reload Page
+                        </button>
+                    </div>
+                `;
+                
+                // Update all displays with error state
+                ['total-sensors-coverage', 'zones-covered', 'avg-sensors', 'coverage-area'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = 'Error';
+                });
+                
+                const mapEl = document.getElementById('map');
+                if (mapEl) mapEl.innerHTML = errorHTML;
+                
+                const tableEl = document.getElementById('zones-table');
+                if (tableEl) tableEl.innerHTML = errorHTML;
+            }
+        });
+    </script>
+</body>
+</html>

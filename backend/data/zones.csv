@@ -1,0 +1,69 @@
+zone_name,traffic_level,center_lat,center_lon,sensor_location_name,sensor_landmark,sensor_lat,sensor_lon
+HSR Layout,High,12.9116,77.6381,27th Main Road,Near BDA Complex,12.9116,77.6381
+HSR Layout,High,12.9116,77.6381,Outer Ring Road,HSR BDA Complex Signal,12.9088,77.641
+HSR Layout,High,12.9116,77.6381,Sector 1,HSR Club Entrance,12.9145,77.6352
+HSR Layout,High,12.9116,77.6381,Sector 2,Agara Lake Park,12.9095,77.6335
+HSR Layout,High,12.9116,77.6381,Sector 6,HSR Sports Complex,12.907,77.639
+Whitefield,High,12.9698,77.7499,ITPL Main Road,International Tech Park,12.9698,77.7499
+Whitefield,High,12.9698,77.7499,Whitefield Main Road,Forum Value Mall,12.9716,77.7502
+Whitefield,High,12.9698,77.7499,EPIP Zone,Graphite India Junction,12.965,77.741
+Whitefield,High,12.9698,77.7499,Varthur Road,Marathahalli Bridge,12.9591,77.7385
+Whitefield,High,12.9698,77.7499,Hoodi Circle,Hoodi Junction,12.982,77.718
+Whitefield,High,12.9698,77.7499,Brookefield,Brookefield Hospital,12.962,77.752
+Indiranagar,High,12.9716,77.6412,100 Feet Road,Indiranagar Metro Station,12.9716,77.6412
+Indiranagar,High,12.9716,77.6412,CMH Road,CMH Road Junction,12.9698,77.638
+Indiranagar,High,12.9716,77.6412,12th Main Road,Chinmaya Mission Hospital,12.978,77.6405
+Indiranagar,High,12.9716,77.6412,Domlur Flyover,Indiranagar-Domlur Link,12.965,77.639
+Indiranagar,High,12.9716,77.6412,HAL 2nd Stage,HAL Police Station,12.9745,77.645
+Koramangala,High,12.9352,77.6245,80 Feet Road,Koramangala Water Tank,12.9352,77.6245
+Koramangala,High,12.9352,77.6245,Outer Ring Road,Sony World Signal,12.9275,77.627
+Koramangala,High,12.9352,77.6245,5th Block,Jyoti Nivas College,12.932,77.6195
+Koramangala,High,12.9352,77.6245,6th Block,Forum Mall,12.9342,77.6101
+Koramangala,High,12.9352,77.6245,7th Block,BDA Complex,12.9385,77.628
+Jayanagar,Medium,12.925,77.5938,4th Block,Jayanagar Shopping Complex,12.925,77.5938
+Jayanagar,Medium,12.925,77.5938,9th Block,Jayanagar General Hospital,12.9195,77.587
+Jayanagar,Medium,12.925,77.5938,3rd Block,Jayanagar Police Station,12.928,77.592
+Jayanagar,Medium,12.925,77.5938,South End Circle,Ashoka Pillar,12.942,77.595
+Marathahalli,High,12.9591,77.701,Marathahalli Bridge,ORR Flyover,12.9591,77.701
+Marathahalli,High,12.9591,77.701,Varthur Main Road,Sakra Hospital,12.955,77.708
+Marathahalli,High,12.9591,77.701,Kadubeesanahalli,Prestige Shantiniketan,12.935,77.697
+Marathahalli,High,12.9591,77.701,HAL Old Airport Road,Trinity Metro Station,12.963,77.685
+Marathahalli,High,12.9591,77.701,Kundalahalli Gate,Innovative Multiplex,12.968,77.695
+Electronic City,Medium,12.8456,77.6603,Phase 1,Infosys Main Gate,12.8456,77.6603
+Electronic City,Medium,12.8456,77.6603,Phase 2,TCS Campus,12.8398,77.677
+Electronic City,Medium,12.8456,77.6603,Hosur Road,Electronic City Metro,12.8408,77.659
+Electronic City,Medium,12.8456,77.6603,Konappana Agrahara,Wipro Corporate Office,12.852,77.665
+Yelahanka,Medium,13.1007,77.5963,Yelahanka New Town,BMTC Bus Depot,13.1007,77.5963
+Yelahanka,Medium,13.1007,77.5963,Doddaballapur Road,Yelahanka Air Force Station,13.105,77.588
+Yelahanka,Medium,13.1007,77.5963,Kogilu Cross,Manyata Tech Park Entrance,13.0435,77.6205
+Yelahanka,Medium,13.1007,77.5963,Jakkur Aerodrome,Jakkur Flying Club,13.082,77.5935
+BTM Layout,High,12.9165,77.6101,BTM 2nd Stage,Udupi Garden Signal,12.9165,77.6101
+BTM Layout,High,12.9165,77.6101,Outer Ring Road,Silk Board Junction,12.918,77.6229
+BTM Layout,High,12.9165,77.6101,BTM 1st Stage,BTM Water Tank,12.912,77.608
+BTM Layout,High,12.9165,77.6101,Madiwala,Madiwala Market,12.914,77.618
+BTM Layout,High,12.9165,77.6101,Hongasandra,Hongasandra Lake,12.9195,77.605
+Banashankari,Medium,12.925,77.5487,3rd Stage,BDA Complex,12.925,77.5487
+Banashankari,Medium,12.925,77.5487,2nd Stage,Banashankari Temple,12.928,77.5515
+Banashankari,Medium,12.925,77.5487,IIMB Road,IIM Bangalore,12.9198,77.538
+Banashankari,Medium,12.925,77.5487,Kanakapura Road,Vajarahalli Signal,12.915,77.552
+Hebbal,High,13.0358,77.597,Hebbal Flyover,Hebbal Junction,13.0358,77.597
+Hebbal,High,13.0358,77.597,Outer Ring Road,Manyata Tech Park,13.038,77.615
+Hebbal,High,13.0358,77.597,Bellary Road,Esteem Mall,13.042,77.592
+Hebbal,High,13.0358,77.597,Nagawara,Nagawara Lake,13.045,77.602
+Hebbal,High,13.0358,77.597,HBR Layout,BEL Circle,13.029,77.638
+Silk Board,High,12.918,77.6229,Silk Board Junction,ORR-Hosur Road Junction,12.918,77.6229
+Silk Board,High,12.918,77.6229,Bommanahalli,Forum Neighbourhood Mall,12.9088,77.626
+Silk Board,High,12.918,77.6229,Begur Road,Hongasandra Signal,12.9142,77.6308
+Silk Board,High,12.918,77.6229,HSR Extension,Agara Signal,12.9135,77.6185
+Peenya,Medium,13.0297,77.5158,Peenya Industrial Area,KSSIDC Complex,13.0297,77.5158
+Peenya,Medium,13.0297,77.5158,Tumkur Road,Peenya BMTC Depot,13.035,77.51
+Peenya,Medium,13.0297,77.5158,Jalahalli Cross,Jalahalli Police Station,13.042,77.522
+Peenya,Medium,13.0297,77.5158,Yeshwanthpur,Yeshwanthpur Metro,13.028,77.5385
+Rajajinagar,Medium,12.9916,77.5544,Rajajinagar Industrial Estate,Navrang Theatre,12.9916,77.5544
+Rajajinagar,Medium,12.9916,77.5544,Chord Road,Peenya Metro Station,12.995,77.548
+Rajajinagar,Medium,12.9916,77.5544,Prakash Nagar,Prakash Nagar Bus Stop,12.987,77.559
+Rajajinagar,Medium,12.9916,77.5544,Mahalaxmi Layout,Mahalaxmi Metro,12.978,77.542
+Malleshwaram,Medium,13.0052,77.5703,18th Cross,Mantri Square Mall,13.0052,77.5703
+Malleshwaram,Medium,13.0052,77.5703,Sampige Road,Malleshwaram Circle,13.002,77.567
+Malleshwaram,Medium,13.0052,77.5703,Margosa Road,RTO Office,13.008,77.5735
+Malleshwaram,Medium,13.0052,77.5703,Sankey Tank,Sankey Tank Park,12.999,77.562

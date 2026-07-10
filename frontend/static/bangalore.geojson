@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"name": "Bengaluru", "type": "city_boundary"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [77.46, 12.83],
+          [77.63, 12.78],
+          [77.78, 12.89],
+          [77.76, 13.12],
+          [77.60, 13.16],
+          [77.49, 13.08],
+          [77.46, 12.83]
+        ]]
+      }
+    }
+  ]
+}

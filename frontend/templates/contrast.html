@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality Contrast - Atmos</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        .contrast-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-xl), var(--glow-purple);
+        }
+        
+        .zone-ranking {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .zone-rank-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .zone-rank-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-primary);
+        }
+        
+        .rank-number {
+            width: 44px;
+            height: 44px;
+            background: var(--accent-gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        
+        .rank-number.worst {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        }
+        
+        .rank-number.best {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+        
+        .zone-info {
+            flex: 1;
+        }
+        
+        .zone-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .zone-meta {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .zone-pm25 {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--accent-primary);
+        }
+        
+        .insight-card {
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+        
+        .insight-danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+            border-left-color: var(--danger);
+        }
+        
+        .insight-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
+            border-left-color: var(--success);
+        }
+        
+        .insight-info {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
+            border-left-color: var(--info);
+        }
+    </style>
+</head>
+<body>
+    <div id="notification-bar" class="notification-bar" style="display: none;">
+        <div class="status-icon">
+            <div class="pulse"></div>
+        </div>
+        <div class="notification-content">
+            <span id="notification-text">Loading...</span>
+            <span id="notification-timestamp" class="timestamp"></span>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">🌿 ATMOS</div>
+            <nav>
+                <ul>
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/compare">Compare</a></li>
+                    <li><a href="/coverage">Coverage</a></li>
+                    <li><a href="/deployment">Deploy</a></li>
+                    <li><a href="/query">Query</a></li>
+                    <li><a href="/info">Info</a></li>
+                    <li><a href="/contrast">Contrast</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="contrast-hero">
+            <h1>⚖️ Air Quality Contrast</h1>
+            <p style="font-size: 1.1rem; opacity: 0.95;">
+                Comparing the best and worst air quality zones in Bengaluru
+            </p>
+        </div>
+
+        <div class="grid-2">
+            <div class="card fade-in">
+                <h2 style="color: var(--danger); margin-bottom: 1rem;">🚨 Worst Air Quality Zones</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Areas with highest pollution levels requiring immediate attention
+                </p>
+                <div id="worst-zones" class="zone-ranking"></div>
+            </div>
+
+            <div class="card fade-in">
+                <h2 style="color: var(--success); margin-bottom: 1rem;">✨ Best Air Quality Zones</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Areas with cleanest air ideal for outdoor activities
+                </p>
+                <div id="best-zones" class="zone-ranking"></div>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            <h2 class="card-title">📈 Pollution Distribution</h2>
+            <div class="chart-container">
+                <canvas id="pollution-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            <h2 class="card-title">🔍 Key Insights</h2>
+            
+            <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                <div class="insight-card insight-danger">
+                    <h3 style="color: var(--danger); margin-bottom: 0.5rem;">High Pollution Zones</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">
+                        <strong>Common factors:</strong> High traffic density, industrial areas, construction activities, 
+                        and limited green cover. These zones require priority intervention with increased sensor deployment 
+                        and pollution control measures.
+                    </p>
+                </div>
+
+                <div class="insight-card insight-success">
+                    <h3 style="color: var(--success); margin-bottom: 0.5rem;">Low Pollution Zones</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">
+                        <strong>Common factors:</strong> Lower traffic density, residential areas, proximity to parks, 
+                        better urban planning, and higher vegetation cover. These zones serve as benchmarks for 
+                        city-wide pollution control strategies.
+                    </p>
+                </div>
+
+                <div class="insight-card insight-info">
+                    <h3 style="color: var(--info); margin-bottom: 0.5rem;">Disparity Impact</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">
+                        The contrast between zones highlights the need for targeted interventions. High pollution zones 
+                        require immediate action including traffic management, green belt development, and stricter 
+                        industrial emission controls. The hybrid sensor network enables precise monitoring of these 
+                        disparities for data-driven policy making.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            <h2 class="card-title">📊 Complete Zone Rankings</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                All zones sorted by PM2.5 levels (highest to lowest)
+            </p>
+            <div id="all-zones-table"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', path='app.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // FIXED: Add error handling
+                const model = await loadModelData();
+                if (!model) {
+                    throw new Error('Failed to load model data');
+                }
+                
+                // FIXED: Add null check for zones
+                if (!model.zones || model.zones.length === 0) {
+                    throw new Error('No zones data available');
+                }
+
+                const sortedZones = [...model.zones].sort((a, b) => (b.pm25 || 0) - (a.pm25 || 0));
+                
+                // Top 5 worst zones
+                const worstZones = sortedZones.slice(0, 5);
+                const worstContainer = document.getElementById('worst-zones');
+                if (worstContainer) {
+                    worstContainer.innerHTML = worstZones.map((zone, idx) => {
+                        // FIXED: Add null checks
+                        const zoneName = zone.name || 'Unknown Zone';
+                        const zonePm25 = zone.pm25 || 0;
+                        const zoneTraffic = zone.traffic || 'Unknown';
+                        const zoneSensors = zone.sensors || 0;
+                        const hasReference = zone.has_reference_sensor || false;
+                        const monitoringSensors = zone.monitoring_sensors || zoneSensors;
+                        
+                        const category = typeof getAQICategory === 'function' ? 
+                            getAQICategory(zonePm25) : 
+                            { class: 'aqi-moderate', text: 'Moderate' };
+                        
+                        const sensorType = hasReference ? 
+                            `<span style="color: #EC4899;">● REF</span> + ${monitoringSensors} MON` : 
+                            `${zoneSensors} MON`;
+                        
+                        return `
+                            <div class="zone-rank-item">
+                                <div class="rank-number worst">${idx + 1}</div>
+                                <div class="zone-info">
+                                    <div class="zone-name">${zoneName}</div>
+                                    <div class="zone-meta">
+                                        <span>${sensorType}</span>
+                                        <span>${zoneTraffic} Traffic</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div class="zone-pm25">${zonePm25.toFixed(1)}</div>
+                                    <div class="aqi-badge ${category.class}" style="margin-top: 0.25rem; font-size: 0.75rem;">
+                                        ${category.text}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                // Top 5 best zones
+                const bestZones = sortedZones.slice(-5).reverse();
+                const bestContainer = document.getElementById('best-zones');
+                if (bestContainer) {
+                    bestContainer.innerHTML = bestZones.map((zone, idx) => {
+                        // FIXED: Add null checks
+                        const zoneName = zone.name || 'Unknown Zone';
+                        const zonePm25 = zone.pm25 || 0;
+                        const zoneTraffic = zone.traffic || 'Unknown';
+                        const zoneSensors = zone.sensors || 0;
+                        const hasReference = zone.has_reference_sensor || false;
+                        const monitoringSensors = zone.monitoring_sensors || zoneSensors;
+                        
+                        const category = typeof getAQICategory === 'function' ? 
+                            getAQICategory(zonePm25) : 
+                            { class: 'aqi-good', text: 'Good' };
+                        
+                        const sensorType = hasReference ? 
+                            `<span style="color: #EC4899;">● REF</span> + ${monitoringSensors} MON` : 
+                            `${zoneSensors} MON`;
+                        
+                        return `
+                            <div class="zone-rank-item">
+                                <div class="rank-number best">${idx + 1}</div>
+                                <div class="zone-info">
+                                    <div class="zone-name">${zoneName}</div>
+                                    <div class="zone-meta">
+                                        <span>${sensorType}</span>
+                                        <span>${zoneTraffic} Traffic</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div class="zone-pm25">${zonePm25.toFixed(1)}</div>
+                                    <div class="aqi-badge ${category.class}" style="margin-top: 0.25rem; font-size: 0.75rem;">
+                                        ${category.text}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                // Pollution distribution chart
+                const ctx = document.getElementById('pollution-chart');
+                if (ctx && typeof Chart !== 'undefined') {
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: sortedZones.map(z => z.name || 'Unknown'),
+                            datasets: [{
+                                label: 'PM2.5 (µg/m³)',
+                                data: sortedZones.map(z => z.pm25 || 0),
+                                borderColor: '#4F46E5',
+                                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 4,
+                                pointHoverRadius: 6,
+                                pointBackgroundColor: sortedZones.map(z => {
+                                    const pm25 = z.pm25 || 0;
+                                    if (pm25 <= 50) return '#10B981';
+                                    if (pm25 <= 100) return '#F59E0B';
+                                    if (pm25 <= 150) return '#F97316';
+                                    if (pm25 <= 200) return '#EF4444';
+                                    return '#9333EA';
+                                })
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: (context) => `PM2.5: ${context.parsed.y} µg/m³`
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: 'rgba(167, 139, 250, 0.1)'
+                                    },
+                                    ticks: {
+                                        color: '#94A3B8'
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'PM2.5 (µg/m³)',
+                                        color: '#A78BFA'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        color: '#94A3B8',
+                                        maxRotation: 45,
+                                        minRotation: 45
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } else if (ctx) {
+                    console.error('Chart.js not loaded');
+                    ctx.parentElement.innerHTML = '<p style="color: var(--danger); padding: 2rem; text-align: center;">Chart library not available</p>';
+                }
+
+                // All zones table
+                if (typeof renderZonesTable === 'function') {
+                    renderZonesTable(sortedZones, 'all-zones-table');
+                } else {
+                    console.error('renderZonesTable function not found');
+                    const tableEl = document.getElementById('all-zones-table');
+                    if (tableEl) {
+                        tableEl.innerHTML = '<p style="color: var(--danger);">Failed to render zones table</p>';
+                    }
+                }
+                
+                console.log('Contrast page loaded successfully');
+                
+            } catch (error) {
+                console.error('Error loading contrast page:', error);
+                
+                // Show error message
+                const errorHTML = `
+                    <div style="padding: 2rem; text-align: center; color: var(--danger);">
+                        <h3>⚠️ Failed to Load Contrast Data</h3>
+                        <p>${error.message}</p>
+                        <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 1rem;">
+                            🔄 Reload Page
+                        </button>
+                    </div>
+                `;
+                
+                ['worst-zones', 'best-zones', 'all-zones-table'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerHTML = errorHTML;
+                });
+                
+                const chartEl = document.getElementById('pollution-chart');
+                if (chartEl && chartEl.parentElement) {
+                    chartEl.parentElement.innerHTML = errorHTML;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

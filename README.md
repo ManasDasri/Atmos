@@ -136,4 +136,5 @@ python -c "from backend.waqi_service import fetch_live_aqi; print('WAQI works!')
 ## Author
 
 **Manas Dasari** 
+
 **Anushree Kasturi**
